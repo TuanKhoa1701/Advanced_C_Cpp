@@ -7,7 +7,7 @@ const char *errorCode;
     y;              \
     longjmp(buf, x);
 
-double divide(int a, int b) // Calculate the quotient of a and b (phep chia)
+/*double divide(int a, int b) // Calculate the quotient of a and b (phep chia)
 {
     if (b == 0)
     {
@@ -45,31 +45,24 @@ int factorial(int a) // Calculate the factorial of an integer (giai thua)
         a--;
     }
     return result;
-}
+}*/
 
 int main()
 {
     // Inputs
-    int a = -10;
-    int b = 20;
+    /*int a = 10;
+    int b = -1;
 
     // Output
-    switch (setjmp(buf))
+    if (setjmp(buf) == 0)
     {
-    case 0:
         printf("%lf\n", divide(a, b));
-        // printf("%lf\n", squareRoot(a));
+        // printf("%lf\n", squareRoot(b));
         // printf("%d\n", factorial(a));
-        break;
-    case 1:
-        printf("%s\n", errorCode);
-        break;
-    case 2:
-        printf("%s\n", errorCode);
-        break;
-    case 3:
-        printf("%s\n", errorCode);
-        break;
     }
+    else
+    {
+        printf("%s\n", errorCode);
+    }*/
     return 0;
 }
