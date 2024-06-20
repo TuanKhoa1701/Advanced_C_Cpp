@@ -12,4 +12,4 @@ $$gcc\space{<}input.i{>}\space{-}S\space{-}o\space{<}output.s{>}$$
 $$gcc\space{-}c\space{<}input.s{>}\space{-}o\space{<}output.o{>}$$
 - **Linker**: liên kết các file mã máy .o lại để tạo thành một file có thể xuất được .exe. Những file .exe là những file được nạp cho máy tính để máy tính có thể xử lý.
 $$gcc\space{<}input1.o{>}\space{<}input2.o{>}{...}\space{-}o\space{<}output{>}$$
-Note: Để chạy file .exe trên VS Code để debug thì nhập câu lệnh: ./{<}output{>}
+Note: Để chạy file .exe trên VS Code để debug thì nhập câu lệnh: ./${<}output{>}$
