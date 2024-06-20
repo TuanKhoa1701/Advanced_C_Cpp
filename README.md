@@ -5,4 +5,4 @@ Máy tính không thể hiểu được những đoạn code mà chúng ta viế
 
 Quá trình compile bao gồm các bước như sau (sử dụng toolchain là gcc):
 - Preprocessing: chuyển đổi các file .c .h .cpp .hpp,... thành các file .i .ii. Bước này cơ bản là chèn nội dung của các file được "#include" vào file output, thay thế nội dung đã được khai báo của các macro và xoá các dòng comment có trong chương trình.
-==Cú pháp==: gcc -E <input.c> -o <output.i>
+$$Cú pháp: gcc -E <input.c> -o <output.i>$$
