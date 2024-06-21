@@ -5,21 +5,19 @@ Máy tính không thể hiểu được những đoạn code mà chúng ta viế
 
 Quá trình compile bao gồm các bước như sau (sử dụng toolchain là gcc):
 - **Preprocessing**: chuyển đổi các file .c .h .cpp .hpp,... thành các file .i .ii. Bước này cơ bản là chèn nội dung của các file được "#include" vào file output, thay thế nội dung đã được khai báo của các macro và xoá các dòng comment có trong chương trình.
-
-`gcc -E <input.c> -o <output.i>`
+#
+    gcc -E <input.c> -o <output.i>
 
 - **Compile**: dịch các file .i .ii thành các file ngôn ngữ assembly .s.
-
-`gcc <input.i> -S -o <output.s>`
+#
+    gcc <input.i> -S -o <output.s>
 
 - **Assembler**: dịch file assembly .s thành mã máy .o. File mã máy bao gồm 2 thành phần chính là địa chỉ thanh ghi và giá trị tại địa chỉ đó. File mã máy có thể ở 2 dạng là mã nhị phân (bin) và mã 16 (hex).
-
-`gcc -c <input.s> -o <output.o>`
+#
+    gcc -c <input.s> -o <output.o>
 
 - **Linker**: liên kết các file mã máy .o lại để tạo thành một file có thể xuất được .exe. Những file .exe là những file được nạp cho máy tính để máy tính có thể xử lý.
-
-`gcc <input1.o> <input2.o>... -o <output.s>`
-
+#
     gcc <input1.o> <input2.o>... -o <output.s>
 
 Note: Nếu muốn chạy file .exe trên VS Code để debug thì nhập câu lệnh: ./\<output\>
