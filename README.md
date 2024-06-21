@@ -6,11 +6,11 @@ Máy tính không thể hiểu được những đoạn code mà chúng ta viế
 Quá trình compile bao gồm các bước như sau (sử dụng toolchain là gcc):
 - **Preprocessing**: chuyển đổi các file .c .h .cpp .hpp,... thành các file .i .ii. Bước này cơ bản là chèn nội dung của các file được "#include" vào file output, thay thế nội dung đã được khai báo của các macro và xoá các dòng comment có trong chương trình.
 
-`gcc -E \<input.c\>; -o \<output.i\>`
+<p align="center"> `gcc -E <input.c> -o <output.i>` </p>
 
 - **Compile**: dịch các file .i .ii thành các file ngôn ngữ assembly .s.
 
-<p align="center"> gcc &lt;input.i&gt; -S -o &lt;output.s&gt; </p>
+<p align="center"> `gcc <input.i> -S -o <output.s>` </p>
 
 - **Assembler**: dịch file assembly .s thành mã máy .o. File mã máy bao gồm 2 thành phần chính là địa chỉ thanh ghi và giá trị tại địa chỉ đó. File mã máy có thể ở 2 dạng là mã nhị phân (bin) và mã 16 (hex).
 
