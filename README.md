@@ -20,6 +20,8 @@ Quá trình compile bao gồm các bước như sau (sử dụng toolchain là g
 
 `gcc <input1.o> <input2.o>... -o <output.s>`
 
+    gcc <input1.o> <input2.o>... -o <output.s>
+
 Note: Nếu muốn chạy file .exe trên VS Code để debug thì nhập câu lệnh: ./\<output\>
 
 ### Macro
