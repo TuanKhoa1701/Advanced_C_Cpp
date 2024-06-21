@@ -47,15 +47,17 @@ Ngoài ra, có thể sử dụng "\_\_VA_ARGS\_\_" để thay thế cho số lư
 **STDARG** cung cấp khả năng viết những hàm mà không biết trước số lượng tham số truyền vào hàm.
 
 - **va_list**: là 1 kiểu dữ liệu làm đại diện cho các tham số truyền vào.
-####
-    va_list args;
+```
+    va_list <args>;
 
 - **va_start**: là nơi chỉ định điểm bắt đầu của danh sách tham số, cần được gọi trước khi truy cập vào bất cứ tham số nào.
-####
-    va_start(args, label)
+```
+    va_start(args, label);
 
-    `args là tên danh sách kiểu va_list đã được khai báo ở <trên>.
-    label là tên biến của điểm bắt đầu của danh sách tham số sẽ được truy cập bằng va_arg.`
+<p style="margin-left: 2em;">
+    args là tên danh sách kiểu va_list đã được khai báo ở trên.
+    label là tên biến của điểm bắt đầu của danh sách tham số sẽ được truy cập bằng va_arg.
+</p>
 
 - **va_arg**: truy cập 1 tham số trong danh sách tham số. Ban đầu, con trỏ va_arg sẽ đi tới điểm bắt đầu là "label" trong va_start và đọc biến tiếp theo trong danh sách. Sau khi đọc xong, con trỏ va_arg sẽ tự động +1 để đi tiếp trong danh sách.
 ####
@@ -65,7 +67,7 @@ Ngoài ra, có thể sử dụng "\_\_VA_ARGS\_\_" để thay thế cho số lư
 
 - **va_end**: kết thúc việc sử dụng danh sách tham số và được gọi ngay trước khi kết thúc hàm. Khi gọi va_end, giá trị con trỏ va_arg sẽ được thu hồi về điểm bắt đầu của va_list.
 ####
-    va_end(args)
+    va_end(args);
 
 ### Thư viện assert
 **ASSERT** cung cấp khả năng dừng chương trình và thông báo lỗi khi gặp một điều kiện nhất định. Nếu điều kiện của assert thoả, chương trình sẽ dừng lại và thông báo một thông điệp lỗi.
