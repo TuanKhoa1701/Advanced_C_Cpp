@@ -35,9 +35,7 @@ Ngoài ra, có thể sử dụng "\_\_VA_ARGS\_\_" để thay thế cho số lư
 **STDARG** cung cấp khả năng viết những hàm mà không biết trước số lượng tham số truyền vào hàm.
 
 - **va_list**: là 1 kiểu dữ liệu làm đại diện cho các tham số truyền vào.
-<div style='text-align: center;'>
-va_list args;
-</div>
+<p style='text-align: center;'>va_list args;</p>
 
 - **va_start**: là nơi chỉ định điểm bắt đầu của danh sách tham số, cần được gọi trước khi truy cập vào bất cứ tham số nào.
 <div style='text-align: center;'>va_start(args, label)</div>
