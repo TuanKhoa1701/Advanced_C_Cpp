@@ -28,20 +28,20 @@ Các toán tử của macro: (Xem ví dụ ở folder bài 1)
 - Toán tử #: chuẩn hoá biến hoặc chuỗi ký tự sau nó thành dạng string khi preprocessing (đặt chúng giữa "").
 - Toán tử ##: nối 2 chuỗi ký tự trước và sau ## lại, thường được dùng để nối 1 chuỗi ký tự với tên 1 biến.
 
-Ngoài ra, có thể sử dụng "__VA_ARGS__" để thay thế cho số lượng tham số không biết trước, dành cho những hàm hay macro mà ta không biết trước số lượng tham số truyền vào hàm.
+Ngoài ra, có thể sử dụng "\_\_VA_ARGS\_\_" để thay thế cho số lượng tham số không biết trước, dành cho những hàm hay macro mà ta không biết trước số lượng tham số truyền vào hàm.
 
 ## Bài 2: Advanced Function Concepts and Debug
 ### Thư viện stdarg
 **STDARG** cung cấp khả năng viết những hàm mà không biết trước số lượng tham số truyền vào hàm.
 
 - va_list: là 1 kiểu dữ liệu làm đại diện cho các tham số truyền vào.
-$$va{_}list args;$$
+$$va_list args;$$
 - va_start: là nơi chỉ định điểm bắt đầu của danh sách tham số, cần được gọi trước khi truy cập vào bất cứ tham số nào.
-$$va{_}start(args, label)$$
+$$va_start(args, label)$$
     args là tên danh sách kiểu va_list đã được khai báo ở trên.
     label là tên biến của điểm bắt đầu của danh sách tham số sẽ được truy cập bằng va_arg
 - va_arg: truy cập 1 tham số trong danh sách tham số. Ban đầu, con trỏ va_arg sẽ đi tới điểm bắt đầu là "label" trong va_start và đọc biến tiếp theo trong danh sách. Sau khi đọc xong, con trỏ va_arg sẽ tự động +1 để đi tiếp trong danh sách.
-$$va{_}arg(args, typedef)$$
+$$va_arg(args, typedef)$$
     typedef là kiểu dữ liệu của tham số cần đọc, nếu typedef khác với kiểu dữ liệu của tham số cần đọc thì giá trị trả về sẽ là giá trị rác.
 - va_end: kết thúc việc sử dụng danh sách tham số và được gọi ngay trước khi kết thúc hàm. Khi gọi va_end, giá trị con trỏ va_arg sẽ được thu hồi về điểm bắt đầu của va_list.
-$$va{_}end(args)$$
+$$va_end(args)$$
