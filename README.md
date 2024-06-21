@@ -6,7 +6,7 @@ Máy tính không thể hiểu được những đoạn code mà chúng ta viế
 Quá trình compile bao gồm các bước như sau (sử dụng toolchain là gcc):
 - **Preprocessing**: chuyển đổi các file .c .h .cpp .hpp,... thành các file .i .ii. Bước này cơ bản là chèn nội dung của các file được "#include" vào file output, thay thế nội dung đã được khai báo của các macro và xoá các dòng comment có trong chương trình.
 
-<p align="center"> gcc -E &lt;input.c&gt; -o &lt;output.i&gt; </p>
+    gcc -E \<input.c\>; -o \<output.i\>
 
 - **Compile**: dịch các file .i .ii thành các file ngôn ngữ assembly .s.
 
@@ -25,9 +25,13 @@ Note: Nếu muốn chạy file .exe trên VS Code để debug thì nhập câu l
 ### Macro
 **MACRO** là những thông tin được xử lý trong bước **Preprocessing** của quá trình **COMPILE**. Có những macro sau:
 - #include: khi preprocessing, editor sẽ chèn nội dung của một file vào chương trình. Macro này giúp chia nhỏ chương trình chính thành những file nhỏ hơn để dễ dàng quản lý và có thể tái sử dụng ở những dự án khác.
+
 - #define: định nghĩa một chuỗi code bằng một chuỗi code khác giúp code được gọn, debug dễ. Khi preprocessing, những chuỗi được #define sẽ được thay thế bằng định nghĩa của chúng.
+
 - #undef: xoá định nghĩa trước đó của chuỗi.
+
 - #ifdef, #ifndef: check xem chuỗi đó đã được định nghĩa chưa, nếu có (#ifdef) hoặc không (#ifndef) thì sẽ biên dịch chương trình sau macro cho tới #endif.
+
 - #if, #elif, #else: nếu điều kiện #if đúng thì sẽ biên dịch chương trình sau đó, nếu sai thì bỏ qua và xét tới các #elif, nếu tất cả sai thì biên dịch chương trình sau #else cho tới khi gặp #endif.
 
 Các toán tử của macro: (Xem ví dụ ở folder bài 1)
@@ -58,6 +62,14 @@ Ngoài ra, có thể sử dụng "\_\_VA_ARGS\_\_" để thay thế cho số lư
 <p align="center">va_arg(args, typedef)</p>
 
     typedef là kiểu dữ liệu của tham số cần đọc, nếu typedef khác với kiểu dữ liệu của tham số cần đọc thì giá trị trả về sẽ là giá trị rác.
+
 - **va_end**: kết thúc việc sử dụng danh sách tham số và được gọi ngay trước khi kết thúc hàm. Khi gọi va_end, giá trị con trỏ va_arg sẽ được thu hồi về điểm bắt đầu của va_list.
 
 <p align="center">va_end(args)</p>
+
+### Thư viện assert
+**ASSERT** cung cấp khả năng dừng chương trình và thông báo lỗi khi gặp một điều kiện nhất định. Nếu điều kiện của assert thoả, chương trình sẽ dừng lại và thông báo một thông điệp lỗi.
+
+<p align="center">va_arg(args, typedef)</p>
+
+**ASSERT** được dùng để debug, có thể để phòng ngừa những lỗi thuật toán hay lỗi toán học như chia cho 0. Để tắt tính năng debug thì dùng #define NDEBUG
