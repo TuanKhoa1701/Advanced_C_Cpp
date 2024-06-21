@@ -5,7 +5,7 @@ Máy tính không thể hiểu được những đoạn code mà chúng ta viế
 
 Quá trình compile bao gồm các bước như sau (sử dụng toolchain là gcc):
 - **Preprocessing**: chuyển đổi các file .c .h .cpp .hpp,... thành các file .i .ii. Bước này cơ bản là chèn nội dung của các file được "#include" vào file output, thay thế nội dung đã được khai báo của các macro và xoá các dòng comment có trong chương trình.
-$$gcc\space{-}E\space{<}input.c{>}\space{-}o\space{<}output.i{>}$$
+<p align="center">gcc -E \<input.c\> -o \<output.i\></p>
 - **Compile**: dịch các file .i .ii thành các file ngôn ngữ assembly .s.
 $$gcc\space{<}input.i{>}\space{-}S\space{-}o\space{<}output.s{>}$$
 - **Assembler**: dịch file assembly .s thành mã máy .o. File mã máy bao gồm 2 thành phần chính là địa chỉ thanh ghi và giá trị tại địa chỉ đó. File mã máy có thể ở 2 dạng là mã nhị phân (bin) và mã 16 (hex).
@@ -39,13 +39,17 @@ Ngoài ra, có thể sử dụng "\_\_VA_ARGS\_\_" để thay thế cho số lư
 <p align="center">va_list args;</p>
 
 - **va_start**: là nơi chỉ định điểm bắt đầu của danh sách tham số, cần được gọi trước khi truy cập vào bất cứ tham số nào.
-<div style='text-align: center;'>va_start(args, label)</div>
+
+<p align="center">va_start(args, label)</p>
 
     args là tên danh sách kiểu va_list đã được khai báo ở trên.
     label là tên biến của điểm bắt đầu của danh sách tham số sẽ được truy cập bằng va_arg
+    
 - **va_arg**: truy cập 1 tham số trong danh sách tham số. Ban đầu, con trỏ va_arg sẽ đi tới điểm bắt đầu là "label" trong va_start và đọc biến tiếp theo trong danh sách. Sau khi đọc xong, con trỏ va_arg sẽ tự động +1 để đi tiếp trong danh sách.
-<div style='text-align: center;'>va_arg(args, typedef)</div>
 
-        typedef là kiểu dữ liệu của tham số cần đọc, nếu typedef khác với kiểu dữ liệu của tham số cần đọc thì giá trị trả về sẽ là giá trị rác.
+<p align="center">va_arg(args, typedef)</p>
+
+    typedef là kiểu dữ liệu của tham số cần đọc, nếu typedef khác với kiểu dữ liệu của tham số cần đọc thì giá trị trả về sẽ là giá trị rác.
 - **va_end**: kết thúc việc sử dụng danh sách tham số và được gọi ngay trước khi kết thúc hàm. Khi gọi va_end, giá trị con trỏ va_arg sẽ được thu hồi về điểm bắt đầu của va_list.
-<div style='text-align: center;'>va_end(args)</div>
+
+<p align="center">va_end(args)</p>
