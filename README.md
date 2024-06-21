@@ -47,14 +47,14 @@ Ngoài ra, có thể sử dụng "\_\_VA_ARGS\_\_" để thay thế cho số lư
 **STDARG** cung cấp khả năng viết những hàm mà không biết trước số lượng tham số truyền vào hàm.
 
 - **va_list**: là 1 kiểu dữ liệu làm đại diện cho các tham số truyền vào.
-```
+####
     va_list <args>;
 
 - **va_start**: là nơi chỉ định điểm bắt đầu của danh sách tham số, cần được gọi trước khi truy cập vào bất cứ tham số nào.
-```
+####
     va_start(args, label);
 
-<p style="margin-left: 2em;">
+<p style="margin-left: 10em;">
     args là tên danh sách kiểu va_list đã được khai báo ở trên.
     label là tên biến của điểm bắt đầu của danh sách tham số sẽ được truy cập bằng va_arg.
 </p>
@@ -63,7 +63,9 @@ Ngoài ra, có thể sử dụng "\_\_VA_ARGS\_\_" để thay thế cho số lư
 ####
     va_arg(args, typedef)
 
-    `typedef là kiểu dữ liệu của tham số cần đọc, nếu typedef khác với kiểu dữ liệu của tham số cần đọc thì giá trị trả về sẽ là giá trị rác.`
+<p style="margin-left: 10em;">
+    typedef là kiểu dữ liệu của tham số cần đọc, nếu typedef khác với kiểu dữ liệu của tham số cần đọc thì giá trị trả về sẽ là giá trị rác.
+</p>
 
 - **va_end**: kết thúc việc sử dụng danh sách tham số và được gọi ngay trước khi kết thúc hàm. Khi gọi va_end, giá trị con trỏ va_arg sẽ được thu hồi về điểm bắt đầu của va_list.
 ####
