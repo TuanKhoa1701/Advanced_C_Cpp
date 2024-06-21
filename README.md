@@ -37,7 +37,7 @@ Ngoài ra, có thể sử dụng "\_\_VA_ARGS\_\_" để thay thế cho số lư
 - va_list: là 1 kiểu dữ liệu làm đại diện cho các tham số truyền vào.
 $$va_list args;$$
 - va_start: là nơi chỉ định điểm bắt đầu của danh sách tham số, cần được gọi trước khi truy cập vào bất cứ tham số nào.
-$$va_start(args, label)$$
+<p align = "center">va_start(args, label)</p>
     args là tên danh sách kiểu va_list đã được khai báo ở trên.
     label là tên biến của điểm bắt đầu của danh sách tham số sẽ được truy cập bằng va_arg
 - va_arg: truy cập 1 tham số trong danh sách tham số. Ban đầu, con trỏ va_arg sẽ đi tới điểm bắt đầu là "label" trong va_start và đọc biến tiếp theo trong danh sách. Sau khi đọc xong, con trỏ va_arg sẽ tự động +1 để đi tiếp trong danh sách.
