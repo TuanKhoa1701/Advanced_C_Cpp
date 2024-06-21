@@ -5,19 +5,19 @@ Máy tính không thể hiểu được những đoạn code mà chúng ta viế
 
 Quá trình compile bao gồm các bước như sau (sử dụng toolchain là gcc):
 - **Preprocessing**: chuyển đổi các file .c .h .cpp .hpp,... thành các file .i .ii. Bước này cơ bản là chèn nội dung của các file được "#include" vào file output, thay thế nội dung đã được khai báo của các macro và xoá các dòng comment có trong chương trình.
-#
+####
     gcc -E <input.c> -o <output.i>
 
 - **Compile**: dịch các file .i .ii thành các file ngôn ngữ assembly .s.
-#
+####
     gcc <input.i> -S -o <output.s>
 
 - **Assembler**: dịch file assembly .s thành mã máy .o. File mã máy bao gồm 2 thành phần chính là địa chỉ thanh ghi và giá trị tại địa chỉ đó. File mã máy có thể ở 2 dạng là mã nhị phân (bin) và mã 16 (hex).
-#
+####
     gcc -c <input.s> -o <output.o>
 
 - **Linker**: liên kết các file mã máy .o lại để tạo thành một file có thể xuất được .exe. Những file .exe là những file được nạp cho máy tính để máy tính có thể xử lý.
-#
+####
     gcc <input1.o> <input2.o>... -o <output.s>
 
 Note: Nếu muốn chạy file .exe trên VS Code để debug thì nhập câu lệnh: ./\<output\>
@@ -47,29 +47,29 @@ Ngoài ra, có thể sử dụng "\_\_VA_ARGS\_\_" để thay thế cho số lư
 **STDARG** cung cấp khả năng viết những hàm mà không biết trước số lượng tham số truyền vào hàm.
 
 - **va_list**: là 1 kiểu dữ liệu làm đại diện cho các tham số truyền vào.
-
-<p align="center">va_list args;</p>
+####
+    va_list args;
 
 - **va_start**: là nơi chỉ định điểm bắt đầu của danh sách tham số, cần được gọi trước khi truy cập vào bất cứ tham số nào.
+####
+    va_start(args, label)
 
-<p align="center">va_start(args, label)</p>
-
-    args là tên danh sách kiểu va_list đã được khai báo ở trên.
-    label là tên biến của điểm bắt đầu của danh sách tham số sẽ được truy cập bằng va_arg
+    `args là tên danh sách kiểu va_list đã được khai báo ở <trên>.
+    label là tên biến của điểm bắt đầu của danh sách tham số sẽ được truy cập bằng va_arg.`
 
 - **va_arg**: truy cập 1 tham số trong danh sách tham số. Ban đầu, con trỏ va_arg sẽ đi tới điểm bắt đầu là "label" trong va_start và đọc biến tiếp theo trong danh sách. Sau khi đọc xong, con trỏ va_arg sẽ tự động +1 để đi tiếp trong danh sách.
+####
+    va_arg(args, typedef)
 
-<p align="center">va_arg(args, typedef)</p>
-
-    typedef là kiểu dữ liệu của tham số cần đọc, nếu typedef khác với kiểu dữ liệu của tham số cần đọc thì giá trị trả về sẽ là giá trị rác.
+    `typedef là kiểu dữ liệu của tham số cần đọc, nếu typedef khác với kiểu dữ liệu của tham số cần đọc thì giá trị trả về sẽ là giá trị rác.`
 
 - **va_end**: kết thúc việc sử dụng danh sách tham số và được gọi ngay trước khi kết thúc hàm. Khi gọi va_end, giá trị con trỏ va_arg sẽ được thu hồi về điểm bắt đầu của va_list.
-
-<p align="center">va_end(args)</p>
+####
+    va_end(args)
 
 ### Thư viện assert
 **ASSERT** cung cấp khả năng dừng chương trình và thông báo lỗi khi gặp một điều kiện nhất định. Nếu điều kiện của assert thoả, chương trình sẽ dừng lại và thông báo một thông điệp lỗi.
-
-<p align="center">va_arg(args, typedef)</p>
+####
+    va_arg(args, typedef)
 
 **ASSERT** được dùng để debug, có thể để phòng ngừa những lỗi thuật toán hay lỗi toán học như chia cho 0. Để tắt tính năng debug thì dùng #define NDEBUG
