@@ -5,13 +5,21 @@ Máy tính không thể hiểu được những đoạn code mà chúng ta viế
 
 Quá trình compile bao gồm các bước như sau (sử dụng toolchain là gcc):
 - **Preprocessing**: chuyển đổi các file .c .h .cpp .hpp,... thành các file .i .ii. Bước này cơ bản là chèn nội dung của các file được "#include" vào file output, thay thế nội dung đã được khai báo của các macro và xoá các dòng comment có trong chương trình.
+
 <p align="center">gcc -E \<input.c\> -o \<output.i\></p>
+
 - **Compile**: dịch các file .i .ii thành các file ngôn ngữ assembly .s.
-$$gcc\space{<}input.i{>}\space{-}S\space{-}o\space{<}output.s{>}$$
+
+<p align="center">gcc \<input.i\> -S -o \<output.s\></p>
+
 - **Assembler**: dịch file assembly .s thành mã máy .o. File mã máy bao gồm 2 thành phần chính là địa chỉ thanh ghi và giá trị tại địa chỉ đó. File mã máy có thể ở 2 dạng là mã nhị phân (bin) và mã 16 (hex).
-$$gcc\space{-}c\space{<}input.s{>}\space{-}o\space{<}output.o{>}$$
+
+<p align="center">gcc -c \<input.s\> -o \<output.o\></p>
+
 - **Linker**: liên kết các file mã máy .o lại để tạo thành một file có thể xuất được .exe. Những file .exe là những file được nạp cho máy tính để máy tính có thể xử lý.
-$$gcc\space{<}input1.o{>}\space{<}input2.o{>}{...}\space{-}o\space{<}output{>}$$
+
+<p align="center">gcc \<input1.o\> \<input1.o\>... -o \<output\></p>
+
 Note: Nếu muốn chạy file .exe trên VS Code để debug thì nhập câu lệnh: ./\<output\>
 
 ### Macro
@@ -44,7 +52,7 @@ Ngoài ra, có thể sử dụng "\_\_VA_ARGS\_\_" để thay thế cho số lư
 
     args là tên danh sách kiểu va_list đã được khai báo ở trên.
     label là tên biến của điểm bắt đầu của danh sách tham số sẽ được truy cập bằng va_arg
-    
+
 - **va_arg**: truy cập 1 tham số trong danh sách tham số. Ban đầu, con trỏ va_arg sẽ đi tới điểm bắt đầu là "label" trong va_start và đọc biến tiếp theo trong danh sách. Sau khi đọc xong, con trỏ va_arg sẽ tự động +1 để đi tiếp trong danh sách.
 
 <p align="center">va_arg(args, typedef)</p>
