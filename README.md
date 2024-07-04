@@ -74,3 +74,83 @@ Ngoài ra, có thể sử dụng "\_\_VA_ARGS\_\_" để thay thế cho số lư
     va_arg(args, typedef)
 ```
 **ASSERT** được dùng để debug, có thể để phòng ngừa những lỗi thuật toán hay lỗi toán học như chia cho 0. Để tắt tính năng debug thì dùng #define NDEBUG
+## Bài 3: Advanced Pointer
+**Pointer (Con trỏ)** là một biến lưu giá trị địa chỉ bộ nhớ của biến khác. Pointer giúp các thao tác trên bộ nhớ được linh hoạt hơn. Kích thước của con trỏ phụ thuộc vào kiến trúc máy tính và trình biên dịch.\
+Cách khai báo:
+```
+    int *ptr = &value;
+```
+Sử dụng ký tự & giúp ta lấy được địa chỉ của biến đằng sau &. Ở ví dụ trên, biến con trỏ tên "ptr" có giá trị là địa chỉ của một biến khác tên là "test".\
+Ta có thể lấy địa chỉ của biến "test" thông qua con trỏ "ptr" như sau:
+```
+    int address = ptr;
+```
+Để truy cập đến giá trị của biến "test", ta có thể sử dụng biến con trỏ "ptr" như sau:
+```
+    *ptr = 6;
+```
+Sử dụng ký tự * giúp ta truy cập được giá trị của biến được biến con trỏ chỉ tới (dereference). Ở đây, ta sử dụng con trỏ "ptr" để truy cập vào giá trị của biến "test" và thay đổi nó bằng 6.\
+- **void pointer (con trỏ void)** là biến con trỏ có thể trỏ tới địa chỉ của mọi kiểu dữ liệu. Cách khai báo giống với khai báo con trỏ bình thường nhưng thay kiểu dữ liệu bằng "void"
+```
+    void *ptr;
+```
+Tuy nhiên, nếu muốn truy cập đến giá trị của của biến thông qua void pointer thì ta phải ép kiểu dữ liệu của nó:
+```
+    int value = 5;
+    void *ptr = &value;
+    *(int*)(ptr) = 10;
+```
+Ở đây, ta vừa ép kiểu "ptr" là pointer to integer để nó có thể truy cập đến giá trị của "value" và đọc nó dưới dạng số nguyên.
+- **Function Pointer (con trỏ hàm)** là biến con trỏ lưu địa chỉ của một hàm. Con trỏ hàm cho phép bạn truyền một hàm như là một đối số cho một hàm khác, lưu trữ địa chỉ của hàm trong một cấu trúc dữ liệu, hoặc thậm chí truyền hàm như một giá trị trả về từ một hàm khác.\
+Cách khai báo con trỏ hàm phụ thuộc vào kiểu giá trị trả về của hàm và các kiểu dữ liệu của các tham số truyền vào hàm. Ví dụ:
+```
+    void function1();
+    int function2(int a, int b);
+
+    void (*ptrToFunction1)();
+    int (*ptrToFunction2)(int, int);
+```
+Ta gán địa chỉ cho con trỏ hàm như sau:
+```
+    ptrToFunction1 = function1;
+    ptrToFunction2 = function2;
+```
+Để truy xuất (thực thi) hàm thông qua con trỏ hàm ta làm như sau:
+```
+    (*ptrToFunction1)();
+    (*ptrToFunction2)(4, 5);
+```
+Có thể hiểu () được dùng để truy xuất một hàm nào đó.
+- **Pointer to Constant (con trỏ đến hằng)** là một con trỏ chỉ tới vùng nhớ hằng, tức là giá trị trong địa chỉ vùng nhớ đó không thể thay đổi. Tuy nhiên, pointer to constant có thể thay đổi địa chỉ mà nó trỏ tới.\
+Cách khai báo:
+```
+    int const *ptr = &value;
+    const int *ptr = &value;
+```
+- **Constant Pointer (con trỏ hằng)** là một con trỏ không thể thay đổi giá trị của nó, tức là không thể thay đổi địa chỉ mà nó trỏ đến. Có thể nói Constant Pointer là ngược lại với Pointer to Constant.\
+Cách khai báo:
+```
+    int *const ptr = &value;
+```
+- **Pointer to pointer (con trỏ đến con trỏ)** là một con trỏ lưu giá trị địa chỉ của một con trỏ khác.\
+Cách khai báo:
+```
+    int **ptr = &ptr1;
+```
+- **NULL Pointer** là một con trỏ không trỏ đến bất cứ đối tượng nào. Khi khai báo một pointer thì ta phải gán giá trị cho pointer đó hoặc là gán NULL cho pointer đó để tránh *Dangling Pointer (con trỏ lơ lửng)*. Dangling pointer chứa giá trị rác và khi dereference nó thì sẽ dẫn đến những hành vi không xác định có thể gây sập chương trình. Ngoài ra, NULL pointer có thể giúp kiểm soát pointer, cho ta biết là pointer đã được khởi tạo và đã có giá trị hợp lệ hay chưa.
+## Bài 4: Storage Classes
+### Extern
+**Extern** là một từ khoá dùng để báo cho trình biên dịch biết là đối tượng đằng sau extern đã được khai báo hay định nghĩa ở một nơi khác trong chương trình hoặc ở file khác. Sau khi khai báo extern với đối tượng nào đó thì ta có thể sử dụng đối tượng đó trong vị trí chương trình hiện tại.\
+Cách khai báo:
+```
+    extern int test;
+    extern void function1();
+    extern int functoin2(int, int);
+```
+### Static
+- **Static Local (biến static cục bộ)** là một biến cục bộ có giá trị được giữ lại qua những lần gọi. Giải thích:
+    - Khi khai báo biến cục bộ không kèm từ khoá *static*, địa chỉ của biến sẽ được lưu vào phân vùng *stack*. Phân vùng stack sẽ thu hồi địa chỉ của biến cục bộ sau khi chương trình rời khỏi khu vực cục bộ của biến đó, nên sau khi thoát khỏi khu vực cục bộ này, địa chỉ của biến sẽ bị thu hồi và khi gọi lại khu vực cục bộ đó, máy tính sẽ khởi tạo lại biến đấy và mọi giá trị trước đó sẽ mất.
+    - Biến được khai báo static sẽ được lưu vào phân vùng *bss* (nếu bằng 0) hoặc *data* (nếu khác 0). 2 phân vùng này có điểm chung là sẽ chỉ thu hồi địa chỉ của biến sau khi chương trình kết thúc. Vì vậy, qua những lần gọi khu vực cục bộ khác nhau, địa chỉ của biến chưa bị thu hồi nên giá trị của biến tại địa chỉ đó chưa mất đi.
+- **Static Global (biến static toàn cục)** là một biến toàn cục bị hạn chế phạm vi sử dụng chỉ trong file khai báo nó. Một biến toàn cục có thể dễ dàng được sử dụng bởi các file khác thông qua từ khoá *extern*, tuy nhiên khi khai báo biến toàn cục với *static*, nó sẽ chỉ cho phép file khai báo nó và không cho phép các file khác truy cập.
+### Volatile
+### Register
