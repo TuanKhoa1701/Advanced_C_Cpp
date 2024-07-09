@@ -153,4 +153,12 @@ Cách khai báo:
     - Biến được khai báo static sẽ được lưu vào phân vùng *bss* (nếu bằng 0) hoặc *data* (nếu khác 0). 2 phân vùng này có điểm chung là sẽ chỉ thu hồi địa chỉ của biến sau khi chương trình kết thúc. Vì vậy, qua những lần gọi khu vực cục bộ khác nhau, địa chỉ của biến chưa bị thu hồi nên giá trị của biến tại địa chỉ đó chưa mất đi.
 - **Static Global (biến static toàn cục)** là một biến toàn cục bị hạn chế phạm vi sử dụng chỉ trong file khai báo nó. Một biến toàn cục có thể dễ dàng được sử dụng bởi các file khác thông qua từ khoá *extern*, tuy nhiên khi khai báo biến toàn cục với *static*, nó sẽ chỉ cho phép file khai báo nó và không cho phép các file khác truy cập.
 ### Volatile
+Việc tối ưu hoá chương trình giúp tăng hiệu suất chương trình. Khi biến được khai báo kèm với từ khoá **volatile**, ta báo cho trình biên dịch biết rằng biến này có thể bị thay đổi bất ngờ hoặc không theo một quy luật nào đó của trình biên dịch, cho nên là đừng tối ưu biến đó. Điều này đảm bảo khi đọc giá trị biến này thì ta đang đọc giá trị mới nhất từ bộ nhớ của nó.
+Volatile được sử dụng nhiều khi biến này được sử dụng chung giữa ngắt và chương trình chính hoặc là được sử dụng cho các thanh ghi phần cứng, nơi mà thường thay đổi giá trị mà không tuân theo các quy tắc lập trình thông thường.
+```
+    volatile int test;
+```
 ### Register
+- Khi một biến được khai báo bình thường, biến đó sẽ được lưu vào bộ nhớ RAM. Tuy nhiên khi muốn truy cập đến một biến nào đó, ta truy cập thanh ghi CPU sẽ nhanh hơn truy cập bộ nhớ RAM. Ngoài ra khi thực hiện các phép tính toán, CPU sẽ phải lưu biến đó vào 1 thanh ghi CPU và liên kết nó với biến trên RAM, sau đó từ thanh ghi sẽ đưa đến bộ ALU để tính toán và cập nhật lại trên thanh ghi, và từ thanh ghi sẽ trả lại giá trị về cho RAM. Điều này sẽ gây mất thời gian khi ta phải thực hiện phép toán nhiều lần trong khoảng thời gian ngắn.
+- Khi một biến được khai báo kèm từ khoá **register** ở phía trước, nó sẽ báo cho trình biên dịch biết rằng biến này sẽ được lưu vào 1 thanh ghi trên CPU. Điều này sẽ giúp việc truy cập đến biến đó sẽ diễn ra nhanh hơn. Tuy nhiên, trình biên dịch sẽ tối ưu hoá biến này khi không còn chỗ trên CPU hoặc thấy hiệu suất sử dụng của nó là không thoả đáng. Ngoài ra, ta không thể lấy địa chỉ của biến bằng toán tử "&" vì thanh ghi CPU không có địa chỉ bộ nhớ như RAM.
+- Các biến register có thể được sử dụng để giảm thời gian tính toán nhiều trong khoảng thời gian ngắn như vòng lặp hoặc để ứng dụng trong những dự án cần hoạt động nghiêm khắc ở thời gian thực.
