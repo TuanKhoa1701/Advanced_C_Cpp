@@ -162,3 +162,39 @@ Volatile được sử dụng nhiều khi biến này được sử dụng chung
 - Khi một biến được khai báo bình thường, biến đó sẽ được lưu vào bộ nhớ RAM. Tuy nhiên khi muốn truy cập đến một biến nào đó, ta truy cập thanh ghi CPU sẽ nhanh hơn truy cập bộ nhớ RAM. Ngoài ra khi thực hiện các phép tính toán, CPU sẽ phải lưu biến đó vào 1 thanh ghi CPU và liên kết nó với biến trên RAM, sau đó từ thanh ghi sẽ đưa đến bộ ALU để tính toán và cập nhật lại trên thanh ghi, và từ thanh ghi sẽ trả lại giá trị về cho RAM. Điều này sẽ gây mất thời gian khi ta phải thực hiện phép toán nhiều lần trong khoảng thời gian ngắn.
 - Khi một biến được khai báo kèm từ khoá **register** ở phía trước, nó sẽ báo cho trình biên dịch biết rằng biến này sẽ được lưu vào 1 thanh ghi trên CPU. Điều này sẽ giúp việc truy cập đến biến đó sẽ diễn ra nhanh hơn. Tuy nhiên, trình biên dịch sẽ tối ưu hoá biến này khi không còn chỗ trên CPU hoặc thấy hiệu suất sử dụng của nó là không thoả đáng. Ngoài ra, ta không thể lấy địa chỉ của biến bằng toán tử "&" vì thanh ghi CPU không có địa chỉ bộ nhớ như RAM.
 - Các biến register có thể được sử dụng để giảm thời gian tính toán nhiều trong khoảng thời gian ngắn như vòng lặp hoặc để ứng dụng trong những dự án cần hoạt động nghiêm khắc ở thời gian thực.
+## Bài 6: Bit Manupilation
+**Bitmask** là một kỹ thuật được sử dụng để thao tác và quản lý từng bit riêng lẻ trong một số nguyên. Bitmask thường được sử dụng để tối ưu hóa bộ nhớ, thực hiện các phép toán logic trên một cụm bit, và quản lý các trạng thái, quyền truy cập, hoặc các thuộc tính khác của một đối tượng.\
+Các toán tử thường sử dụng trong bitmask như sau:
+- **NOT (~)**: đảo giá trị của tất cả các bit trong biến.
+```
+	uint8_t test = 0b 1001 0101;
+	~test;		// 0b 0110 1010;
+```
+- **AND (&)**: Khi 2 bit được AND với nhau có giá trị bằng 1 thì kết quả sẽ là 1, các trường hợp còn lại sẽ bằng 0 (giống phép nhân).
+```
+	uint8_t test1 = 0b 1001 0101;
+	uint8_t test2 = 0b 1010 1001;
+	test1 & test2 = 0b 1000 0001;
+```
+- **OR (|)**: Khi 2 bit được OR với nhau có giá trị bằng 0 thì kết quả sẽ là 0, các trường hợp còn lại sẽ bằng 1 (giống phép cộng).
+```
+	uint8_t test1 = 0b 1001 0101;
+	uint8_t test2 = 0b 1010 1001;
+	test1 | test2 = 0b 1011 1101;
+```
+- **XOR (^)**: Khi 2 bit được OR với nhau có giá trị bằng nhau thì kết quả sẽ là 0, khác nhau sẽ bằng 1.
+```
+	uint8_t test1 = 0b 1001 0101;
+	uint8_t test2 = 0b 1010 1001;
+	test1 ^ test2 = 0b 0011 1100;
+```
+- **Dịch trái (<<)**: Di chuyển các bit của biến bên trái toán tử "<<" về bên trái với số lần là giá trị của biến bên phải toán tử "<<". Khi di chuyển, các bit tràn ra khỏi khung dữ liệu sẽ bị loại bỏ và các bit 0 sẽ điền vào các ô trống.
+```
+	uint8_t test = 0b 1001 0101;
+	test << 2;   //0b 0101 0100
+```
+- **Dịch phải (>>)**: Di chuyển các bit của biến bên trái toán tử ">>" về bên phải với số lần là giá trị của biến bên phải toán tử ">>". Khi di chuyển, các bit tràn ra khỏi khung dữ liệu sẽ bị loại bỏ và các bit 0 sẽ điền vào các ô trống (nếu số bị dịch là một số có dấu và có giá trị < 0 thì các bit 1 sẽ điền vào các ô trống).
+```
+	uint8_t test = 0b 1001 0101;
+	test >> 2;   //0b 0010 0101
+```
