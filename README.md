@@ -198,3 +198,50 @@ Các toán tử thường sử dụng trong bitmask như sau:
 	uint8_t test = 0b 1001 0101;
 	test >> 2;   //0b 0010 0101
 ```
+## Bài 7: Pending Data
+### Struct
+- Từ khoá **struct** được sử dụng để định nghĩa một kiểu dữ liệu tuỳ biến cho phép nhóm các biến (có thể là các kiểu dữ liệu) thành một đơn vị duy nhất. Struct thường dùng để định nghĩa một kiểu dữ liệu có các thành phần biến con có liên quan đến nhau như các thanh ghi trong ngoại vi hay một gói tin cần truyền đi. Struct giúp code dễ đọc, tính bảo trì cao và có thể tái sử dụng dễ dàng.\
+Cách định nghĩa:
+```
+	typedef struct Test {
+		int x;
+		float y;
+		double z;
+	} Test;
+```
+Cách khai báo và truy cập đến các biến thành phần:
+```
+	Test test;
+	test.x;
+	test.y;
+	test.z;
+```
+- Khi khai báo kiểu dữ liệu struct, trình biên dịch sẽ sắp xếp các thành viên vào một ranh giới bộ nhớ cụ thể.
+	- Đầu tiên, trình biên dịch sẽ quét kiểu dữ liệu của các thành viên và chọn ra kiểu dữ liệu có kích thước lớn nhất làm kích thước cho 1 khung bộ nhớ.
+	- Tiếp theo, trình biên dịch sẽ nhét lần lượt các thành viên từ trên xuống dưới vào 1 khung bộ nhớ đó.
+	- Khi thành viên có kích thước lớn hơn phần trống của khung thì sẽ nhét vào khung bộ nhớ mới.
+	- Tính số khung cần dùng để nhét tất cả các thành viên, nhân với kích thước của một khung ta sẽ có được kích thước mà bộ nhớ dùng để chưa kiểu dữ liệu struct đó.
+	- (Hình ảnh)
+### Union
+- Từ khoá **union** được sử dụng để định nghĩa một kiểu dữ liệu tuỳ biến cho phép nhóm các biến (có thể là các kiểu dữ liệu) thành một đơn vị duy nhất. Khác với "struct", nơi mà các thành viên có bộ nhớ riêng thì với "union", các thành viên chia sẻ bộ nhớ với nhau để tiết kiệm bộ nhớ. Điều này đồng nghĩa với việc chỉ có 1 thành viên được hoạt động ở một thời điểm.\
+Cách định nghĩa:
+```
+	typedef union Test {
+		int x;
+		float y;
+		double z;
+	} Test;
+```
+Cách khai báo và truy cập đến các biến thành phần:
+```
+	Test test;
+	test.x;
+	test.y;
+	test.z;
+```
+- Khi khai báo kiểu dữ liệu union, trình biên dịch sẽ sắp xếp các thành viên vào một ranh giới bộ nhớ cụ thể.
+	- Đầu tiên, trình biên dịch sẽ quét kiểu dữ liệu của các thành viên và chọn ra kiểu dữ liệu có kích thước lớn nhất làm kích thước cho 1 khung bộ nhớ.
+	- Tiếp theo, trình biên dịch sẽ nhét lần lượt các thành viên từ trên xuống dưới vào 1 khung bộ nhớ đó.
+	- Khi thành viên có kích thước lớn hơn phần trống của khung thì sẽ nhét vào khung bộ nhớ mới.
+	- Sau khi nhét xong một thành viên, trình biên dịch sẽ sử dụng lại khung bộ nhớ đó để nhét một thành viên mới
+	- Tính số khung lớn nhất cần dùng để nhét một thành viên nào đó, nhân với kích thước của một khung ta sẽ có được kích thước mà bộ nhớ dùng để chưa kiểu dữ liệu union đó.
