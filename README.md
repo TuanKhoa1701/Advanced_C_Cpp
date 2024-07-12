@@ -296,3 +296,216 @@ Các file .hex được nạp vào VĐK sẽ được lưu vào bộ nhớ FLASH
 - Có quyền đọc/ghi trong suốt vòng đời chương trình
 - Các khung stack được tạo ra khi gọi hàm và sẽ thu hồi khi kết thúc hàm
 ## Bài 9: Data Structures
+### JSON
+**JSON (avaScript Object Notation)** là một định dạng truyền tải dữ liệu phổ biến trong lập trình và giao tiếp giữa các máy chủ và trình duyệt web, cũng như giữa các hệ thống khác nhau. Mỗi đối tượng JSON bao gồm một tập hợp các cặp "key" và "value", trong khi mỗi mảng JSON là một tập hợp các giá trị.\
+Các định dạng của JSON bao gồm:
+```
+	typedef enum {
+    	JSON_NULL,
+    	JSON_BOOLEAN,
+    	JSON_NUMBER,
+    	JSON_STRING,
+    	JSON_ARRAY,
+    	JSON_OBJECT
+	} JsonType;
+```
+- JSON_NULL: Kiểu trống
+- JSON_BOOLEAN: Kiểu true/false
+- JSON_NUMBER: Kiểu số
+- JSON_STRING: Kiểu chuỗi ký tự, được nhận biết bằng "
+- JSON_ARRAY: Kiểu mảng, mỗi phần tử có thể là một trong các định dạng còn lại, được nhận biết bằng [
+- JSON_OBJECT: Kiểu đối tượng bao gồm các cặp "key" và "value" (phân tách nhau bằng dấu :), mỗi "value" có thể mọi loại định dạng JSON, được nhận biết rằng {\
+Vì một value chỉ có thể có 1 định dạng nên ta định nghĩa các định dạng JSON bằng "union"
+```
+	typedef union value {
+		int boolean;
+		double number;
+		char *string;
+		struct {
+			struct JsonValue *values;
+			size_t count;
+		} array;
+    	struct {
+			char **keys;
+			struct JsonValue *values;
+	    	size_t count;
+    	} object;
+	} value;
+```
+### Linked list
+**Linked List** là một cấu trúc dữ liệu gồm một chuỗi các phần tử, trong đó mỗi phần tử được gọi là một "node" (nút). Các nút được kết nối với nhau bằng cách sử dụng các con trỏ, tạo thành một chuỗi liên tiếp. Mỗi nút bao gồm:
+- Giá trị dữ liệu
+- Con trỏ tới địa chỉ của nút tiếp theo trong chuỗi. Nếu đây là nút cuối thì giá trị này sẽ là NULL.\
+```
+	typedef struct Node
+	{
+    	int value;
+    	struct Node* next;
+	} Node;
+```
+Linked list giúp các thao tác như thêm hay xoá các phần tử trong chuỗi được nhanh chóng và linh hoạt hơn khi sử dụng một mảng tĩnh, đặc biệt là đối với những chuỗi có rất nhiều thành viên. Linked list còn giúp việc quản lý bộ nhớ hiệu quả vì sử dụng những con trỏ đến liên kết các nút lại với nhau.
+### Stack
+**Stack** là một cấu trúc dữ liệu tuân theo nguyên tắc *Last In, First Out (LIFO)*. Các thao tác cơ bản trên stack là:
+- **pop**: Thêm một phần tử vào đỉnh của stack, không được thêm phần tử khi stack đầy.
+- **push**: Lấy và loại bỏ phần tử đỉnh của stack, không được lấy phần tử khi stack trống.
+- **top**: Trả về giá trị của phần tử đỉnh stack mà không loại bỏ nó.\
+Stack bao gồm những thành phần sau:
+- **size**: Kích thước stack, cho biết số phần tử tối đa được bỏ vào stack
+- **items**: Danh sách các phần tử
+- **top**: Vị trí của phần tử đỉnh stack, khi stack trống thì top = -1. Mỗi khi *pop* thì top++, *push* thì top--. (0 <= top < size)
+```
+	typedef struct Stack {
+    	int* items;
+    	int size;
+    	int top;
+	} Stack;
+```
+### Queue
+**Queue** là một cấu trúc dữ liệu tuân theo nguyên tắc *First In, First Out (FIFO)*. Các thao tác cơ bản trên queue là:
+- **enqueue**: Thêm một phần tử vào cuối queue, không được thêm phần tử khi queue đầy.
+- **dequeue**: Lấy và loại bỏ phần tử đầu của queue, không được lấy phần tử khi queue trống.
+- **front**: Trả về giá trị của phần tử đầu queue mà không loại bỏ nó, khi stack trống thì top = -1.\
+Queue bao gồm những thành phần sau:
+- **size**: Kích thước queue, cho biết số phần tử tối đa được bỏ vào queue
+- **items**: Danh sách các phần tử
+- **front**: Vị trí của phần tử đầu queue, khi queue trống thì front = -1. Mỗi khi *dequeue* thì front++, khi front >= size thì quay trở lại 0. (0 <= front < size)
+- **rear**: Vị trí của phần tử cuối queue, khi queue trống thì rear = -1. Mỗi khi *enqueue* thì rear++, khi rear >= size thì quay trở lại 0. (0 <= rear < size)
+```
+	typedef struct Queue {
+    	int* items;
+    	int size;
+    	int front, rear;
+	} Queue;
+```
+## Bài 10: Big excersize No.1
+### Binary Search
+**Binary Search** là một thuật toán tìm kiếm hiệu quả được sử dụng để tìm vị trí của một phần tử cụ thể trong một mảng đã được sắp xếp. Binary Search được sử dụng để tìm kiếm các bản ghi trong cơ sở dữ liệu được sắp xếp. Binary Search liên tục chia mảng thành hai nửa và loại bỏ một nửa không chứa phần tử cần tìm. Cụ thể như sau:
+- Sắp xếp mảng theo thứ tự tăng dần
+- Đặt phần tử đầu của mảng là *left* (ban đầu là 0), phần tử cuối của mảng là *right* (ban đầu là kích thước mảng -1)
+- Xác định phần tử nằm giữa (middle) của mảng bằng cách: (rigth - left)/2 và làm tròn lên
+- Nếu giá trị của middle là giá trị cần tìm thì trả về middle, nếu không:
+	- Nếu giá trị cần tìm > giá trị middle thì bỏ hết nửa mảng bên trái (left = mid + 1)
+ 	- Nếu giá trị cần tìm < giá trị middle thì bỏ hết nửa mảng bên phải (rigth = mid - 1)
+- Nếu right < left hoặc left > right, trong mảng không có giá trị cần tìm, trả về NULL
+- Lặp lại quá trình cho đến khi tìm được giá trị cần tìm.
+### File Operations
+File **CSV (Comma-Separated Values)** là một loại file văn bản được sử dụng để lưu trữ và truyền tải dữ liệu có cấu trúc dưới dạng bảng, trong đó các dữ liệu của các cột được phân tách bằng dấu phẩy (,) hoặc một ký tự ngăn cách khác. Ví dụ:
+```
+	Họ và tên, Tuổi, Địa chỉ, Số điện thoại
+	John Doe, 30, 123 Main St, 555-1234
+	Jane Smith, 25, 456 Oak St, 555-5678
+	Bob Johnson, 40, 789 Pine St, 555-8765
+```
+Ngôn ngữ lập trình C cung cấp một số thư viện và hàm tiêu biểu để thực hiện các thao tác với file:
+- **fopen**(const char *file_name, const char *access_mode): Mở file có địa chỉ "file_name" với chế độ truy cập "access_mode" bao gồm những kiểu như sau:
+	- r: Mở file với chế độ chỉ đọc file. Nếu mở file thành công thì trả về địa chỉ của phần tử đầu tiên trong file, nếu không thì trả về NULL.
+   	- w: Mở file với chế độ ghi vào file. Nếu file đã tồn tại, thì sẽ ghi đè vào nội dung bên trong file. Nếu file chưa tồn tại thì sẽ tạo một file mới. Nếu không mở được file thì trả về NULL.
+   	- a: Mở file với chế độ nối. Nếu mở file thành công thì trả về địa chỉ của phần tử cuối cùng trong file. Nếu file chưa tồn tại thì sẽ tạo một file mới. Nếu không mở được file thì trả về NULL.
+   	- r+: Mở file với chế độ đọc và ghi file. Nếu mở file thành công thì trả về địa chỉ của phần tử đầu tiên trong file, nếu không thì trả về NULL.
+   	- w+: Mở file với chế độ ghi và đọc file. Nếu file đã tồn tại thì trả về địa chỉ của phần tử đầu tiên của file. Nếu file chưa tồn tại thì sẽ tạo một file mới.
+   	- a+: Mở file với chế độ nối và đọc file. Nếu file đã tồn tại thì trả về địa chỉ của phần tử cuối cùng của file. Nếu file chưa tồn tại thì sẽ tạo một file mới.
+```
+	FILE *fp = fopen("test.csv", "a");
+```
+- errno_t **fopen_s**(FILE **file, const char *file_name, const char *access_mode): Tương tự như "fopen()", khác ở chỗ địa chỉ trả về của hàm sẽ gán về con trỏ FILE đã truyền vào tham số "FILE *file"
+```
+	FILE *fp;
+	fopen_s(&fp, "test.csv", "a");
+```
+- int **fscanf**(FILE *file, const char *format, ...): Đọc dữ liệu từ một tập tin theo định dạng cụ thể.
+	- **file**: Con trỏ đến tập tin
+	- **format**: Chuỗi định dạng (tương tự như scanf)
+	- ...: Danh sách các đối số để lưu trữ dữ liệu đọc được
+	- Hàm sẽ trả về số lượng các mục đã được đọc thành công hoặc trả về "EOF" nếu gặp lỗi hoặc đến cuối tập tin trước khi đọc được bất kỳ mục nào.
+```
+	FILE *fp;
+	int num;
+	char *str;
+
+	fscanf(fp, "%d %s", &num, str);
+```
+- char \***fgets**(char *buffer, int size, FILE *file): Đọc một dòng từ tập tin và lưu trữ nó vào một chuỗi.
+	- **buffer**: Mảng ký tự nơi lưu trữ chuỗi đọc được
+   	- **size**: Số lượng ký tự tối đa để đọc (bao gồm ký tự null kết thúc)
+   	- **file**: Con trỏ đến tập tin
+   	- Hàm sẽ trả về con trỏ đến chuỗi đọc được nếu thành công hoặc trả về "NULL" nếu gặp lỗi hoặc chạy đến cuối tập tin.
+```
+	FILE *fp;
+	int characterRead = 50;
+	char *buffer;
+
+	fgets(buffer, characterRead, fp);
+```
+- int **fgetc**(FILE *file): Đọc một ký tự từ tập tin. Hàm sẽ trả về Ký tự được đọc dưới dạng số nguyên hoặc "EOF" nếu gặp lỗi hoặc đến cuối tập tin.
+```
+	FILE *fp;
+
+	fgetc(fp);
+```
+- int **fread**(void *buffer, int size, int count, FILE *file): Đọc một số lượng phần tử từ tập tin vào bộ nhớ.
+	- **buffer**: Con trỏ đến bộ nhớ nơi lưu trữ dữ liệu đọc được
+   	- **size**: Kích thước của mỗi phần tử
+   	- **count**: Số lượng phần tử để đọc
+   	- Hàm trả về số lượng phần tử đã đọc thành công.
+```
+	FILE *fp;
+	char *buffer;
+	int characterRead = 50;
+
+	fread(buffer, sizeof(char), characterRead, fp);
+```
+- int **fprintf**(FILE *file, const char *format, ...): Ghi dữ liệu vào tập tin theo định dạng cụ thể.
+	- **format**: Chuỗi định dạng (tương tự như printf)
+   	- ...: Danh sách các đối số chứa dữ liệu cần ghi
+   	- Hàm trả về số lượng ký tự đã được ghi hoặc giá trị âm nếu xảy ra lỗi.
+```
+	FILE *fp;
+	int num = 50;
+	char *str = "Hello World!";
+
+	fprintf(fp, "Number: %d\n", num);
+	fprintf(fp, "String: %s", str);
+```
+- int **fputs**(const char *str, FILE *file): Ghi một chuỗi vào tập tin.
+	- **str**: Chuỗi cần ghi
+   	- Hàm trả về giá trị khác âm nếu ghi thành công hoặc EOF nếu gặp lỗi.
+```
+	FILE *fp;
+	char *str = "Hi";
+
+	fputs("Hello World!\n", fp);
+	fputs(str, fp);
+```
+- int **fputc**(int character, FILE *file): Ghi một ký tự vào tập tin.
+	- **character**: Ký tự cần ghi
+   	- Hàm trả về ký tự được ghi nếu thành công hoặc EOF nếu gặp lỗi.
+```
+	FILE *fp;
+	int character = 'B';
+
+	fputc('A', fp);
+	fputc(character, fp);
+```
+- int **fwrite**(const void *buffer, int size, int count, FILE *file): Ghi một số lượng phần tử từ bộ nhớ vào tập tin.
+	- **buffer**: Con trỏ đến bộ nhớ nơi lưu trữ dữ liệu cần ghi
+   	- **size**: Kích thước của mỗi phần tử
+   	- **count**: Số lượng phần tử cần ghi
+   	- Hàm trả về số lượng phần tử đã đọc thành công.
+```
+	FILE *fp;
+	int data[] = {1, 2, 3, 4, 5};
+
+    fwrite(data, sizeof(int), 5, fp);
+```
+- int **fclose**(FILE *file): Đóng một tập tin. Hàm trả về 0 nếu đóng thành công hoặc EOF nếu gặp lỗi.
+```
+	FILE *fp;
+
+	fclose(fp);
+```
+- int **feof**(FILE *file): Kiểm tra xem đã đến cuối tập tin chưa. Hàm trả về Giá trị khác 0 nếu đã đến cuối tập tin hoặc trả về 0 nếu chưa đến cuối tập tin.
+```
+	FILE *fp;
+
+	feof(fp);
+```
