@@ -245,3 +245,54 @@ Cách khai báo và truy cập đến các biến thành phần:
 	- Khi thành viên có kích thước lớn hơn phần trống của khung thì sẽ nhét vào khung bộ nhớ mới.
 	- Sau khi nhét xong một thành viên, trình biên dịch sẽ sử dụng lại khung bộ nhớ đó để nhét một thành viên mới
 	- Tính số khung lớn nhất cần dùng để nhét một thành viên nào đó, nhân với kích thước của một khung ta sẽ có được kích thước mà bộ nhớ dùng để chưa kiểu dữ liệu union đó.
+## Bài 8: Memory Layout
+Các file .hex được nạp vào VĐK sẽ được lưu vào bộ nhớ FLASH sử dụng programmer hoặc bootloader. Khi VĐK được cấp nguồn thì chương trình sẽ được copy vào RAM để CPU thực thi những lệnh trong chương trình. RAM được phân thành những phân vùng sau:
+### Text
+- Chứa các mã máy (các lệnh được thực thi)
+- Lưu hằng số, con trỏ kiểu char
+- Chỉ có quyền đọc và thực thi, không có quyền ghi
+- Được thu hồi bộ nhớ khi chương trình kết thúc, tồn tại trong suốt vòng đời chương trình.
+### Data
+- Chứa các biến toàn cục, biến static đã được khởi tạo với giá trị khác 0
+- Có quyền đọc/ghi trong suốt vòng đời chương trình
+- Được thu hồi bộ nhớ khi chương trình kết thúc, tồn tại trong suốt vòng đời chương trình.
+### bss
+- Chứa các biến toàn cục, biến static chưa khởi tạo giá trị hoặc đã khởi tạo giá trị bằng 0
+- Có quyền đọc/ghi trong suốt vòng đời chương trình
+- Được thu hồi bộ nhớ khi chương trình kết thúc, tồn tại trong suốt vòng đời chương trình.
+### Heap
+- Quản lý bộ nhớ động được cấp phát trong quá trình thực thi chương trình và được quản lý bởi người lập trình
+- Bộ nhớ được cấp phát động bởi các hàm như malloc, calloc, realloc:
+	- malloc(size):
+ 		- Cấp phát bộ nhớ liên tục có kích thước là "size"
+   		- Bộ nhớ được cấp phát chưa được khởi tạo (giá trị rác)
+       	- Giá trị trả về là con trỏ void nếu thành công và NULL nếu thất bại
+	```
+ 		int *test1 = (int*)malloc(size * sizeof(int));		// Cấp phát "size" ô nhớ động dạng int hoặc có kích thước là "size * sizeof(int)" byte
+ 	```
+	- calloc(num, size):
+   		- Cấp phát một vùng nhớ động gồm "num" phần tử, mỗi phần tử có kích thước là "size"
+       	- Bộ nhớ được cấp phát có giá trị bằng 0
+       	- Giá trị trả về là con trỏ void nếu thành công và NULL nếu thất bại
+    ```
+    	char *test2 = (char*)calloc(num, sizeof(char));		// Cấp phát vùng nhớ gồm "num" ô kích thước là "sizeof(char)"
+    ```
+    - realloc(ptr, size):
+      	- Thay đổi kích thước của bộ nhớ đã được cấp phát trước đó (hoặc tạo bộ nhớ mới) mà không muốn mất dữ liệu đã lưu trữ trong vùng bộ nhớ đó hoặc có thể giải phóng bộ nhớ đã cấp
+      	- "ptr" là con trỏ tới vùng bộ nhớ cần thay đổi kích thước. Nếu "ptr" là NULL, realloc hoạt động như malloc.
+      	- "size" là kích thước mới của vùng bộ nhớ. Nếu "size" bằng 0 và "ptr" khác NULL thì realloc sẽ giải phóng bộ nhớ đã được khởi tạo được "ptr" trỏ tới.
+      	- Giá trị trả về là địa chỉ của vùng bộ nhớ mới với kích thước đã thay đổi hoặc là trả về NULL nếu thất bại hoặc giải phóng bộ nhớ thành công.
+    ```
+    	int *test3 = (int*)realloc(test1, (size + 1)*sizeof(int));
+    ```
+- Bộ nhớ được thu hồi bằng tay bởi lập trình viên với lệnh free(ptr). Hệ điều hành sẽ thu hồi toàn bộ bộ nhớ chưa được giải phóng sau khi chương trình kết thúc, tuy nhiên, nó sẽ dẫn đến rò rỉ bộ nhớ.
+```
+	free(test1);
+	free(test2);
+	free(test3);
+```
+### Stack
+- Được quản lý bởi hệ điều hành, chứa các biến toàn cục, các tham số truyền vào, địa chỉ trả về
+- Có quyền đọc/ghi trong suốt vòng đời chương trình
+- Các khung stack được tạo ra khi gọi hàm và sẽ thu hồi khi kết thúc hàm
+## Bài 9: Data Structures
