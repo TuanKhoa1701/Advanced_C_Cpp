@@ -153,4 +153,359 @@ Cách khai báo:
     - Biến được khai báo static sẽ được lưu vào phân vùng *bss* (nếu bằng 0) hoặc *data* (nếu khác 0). 2 phân vùng này có điểm chung là sẽ chỉ thu hồi địa chỉ của biến sau khi chương trình kết thúc. Vì vậy, qua những lần gọi khu vực cục bộ khác nhau, địa chỉ của biến chưa bị thu hồi nên giá trị của biến tại địa chỉ đó chưa mất đi.
 - **Static Global (biến static toàn cục)** là một biến toàn cục bị hạn chế phạm vi sử dụng chỉ trong file khai báo nó. Một biến toàn cục có thể dễ dàng được sử dụng bởi các file khác thông qua từ khoá *extern*, tuy nhiên khi khai báo biến toàn cục với *static*, nó sẽ chỉ cho phép file khai báo nó và không cho phép các file khác truy cập.
 ### Volatile
+Việc tối ưu hoá chương trình giúp tăng hiệu suất chương trình. Khi biến được khai báo kèm với từ khoá **volatile**, ta báo cho trình biên dịch biết rằng biến này có thể bị thay đổi bất ngờ hoặc không theo một quy luật nào đó của trình biên dịch, cho nên là đừng tối ưu biến đó. Điều này đảm bảo khi đọc giá trị biến này thì ta đang đọc giá trị mới nhất từ bộ nhớ của nó.
+Volatile được sử dụng nhiều khi biến này được sử dụng chung giữa ngắt và chương trình chính hoặc là được sử dụng cho các thanh ghi phần cứng, nơi mà thường thay đổi giá trị mà không tuân theo các quy tắc lập trình thông thường.
+```
+    volatile int test;
+```
 ### Register
+- Khi một biến được khai báo bình thường, biến đó sẽ được lưu vào bộ nhớ RAM. Tuy nhiên khi muốn truy cập đến một biến nào đó, ta truy cập thanh ghi CPU sẽ nhanh hơn truy cập bộ nhớ RAM. Ngoài ra khi thực hiện các phép tính toán, CPU sẽ phải lưu biến đó vào 1 thanh ghi CPU và liên kết nó với biến trên RAM, sau đó từ thanh ghi sẽ đưa đến bộ ALU để tính toán và cập nhật lại trên thanh ghi, và từ thanh ghi sẽ trả lại giá trị về cho RAM. Điều này sẽ gây mất thời gian khi ta phải thực hiện phép toán nhiều lần trong khoảng thời gian ngắn.
+- Khi một biến được khai báo kèm từ khoá **register** ở phía trước, nó sẽ báo cho trình biên dịch biết rằng biến này sẽ được lưu vào 1 thanh ghi trên CPU. Điều này sẽ giúp việc truy cập đến biến đó sẽ diễn ra nhanh hơn. Tuy nhiên, trình biên dịch sẽ tối ưu hoá biến này khi không còn chỗ trên CPU hoặc thấy hiệu suất sử dụng của nó là không thoả đáng. Ngoài ra, ta không thể lấy địa chỉ của biến bằng toán tử "&" vì thanh ghi CPU không có địa chỉ bộ nhớ như RAM.
+- Các biến register có thể được sử dụng để giảm thời gian tính toán nhiều trong khoảng thời gian ngắn như vòng lặp hoặc để ứng dụng trong những dự án cần hoạt động nghiêm khắc ở thời gian thực.
+## Bài 6: Bit Manupilation
+**Bitmask** là một kỹ thuật được sử dụng để thao tác và quản lý từng bit riêng lẻ trong một số nguyên. Bitmask thường được sử dụng để tối ưu hóa bộ nhớ, thực hiện các phép toán logic trên một cụm bit, và quản lý các trạng thái, quyền truy cập, hoặc các thuộc tính khác của một đối tượng.\
+Các toán tử thường sử dụng trong bitmask như sau:
+- **NOT (~)**: đảo giá trị của tất cả các bit trong biến.
+```
+	uint8_t test = 0b 1001 0101;
+	~test;		// 0b 0110 1010;
+```
+- **AND (&)**: Khi 2 bit được AND với nhau có giá trị bằng 1 thì kết quả sẽ là 1, các trường hợp còn lại sẽ bằng 0 (giống phép nhân).
+```
+	uint8_t test1 = 0b 1001 0101;
+	uint8_t test2 = 0b 1010 1001;
+	test1 & test2 = 0b 1000 0001;
+```
+- **OR (|)**: Khi 2 bit được OR với nhau có giá trị bằng 0 thì kết quả sẽ là 0, các trường hợp còn lại sẽ bằng 1 (giống phép cộng).
+```
+	uint8_t test1 = 0b 1001 0101;
+	uint8_t test2 = 0b 1010 1001;
+	test1 | test2 = 0b 1011 1101;
+```
+- **XOR (^)**: Khi 2 bit được OR với nhau có giá trị bằng nhau thì kết quả sẽ là 0, khác nhau sẽ bằng 1.
+```
+	uint8_t test1 = 0b 1001 0101;
+	uint8_t test2 = 0b 1010 1001;
+	test1 ^ test2 = 0b 0011 1100;
+```
+- **Dịch trái (<<)**: Di chuyển các bit của biến bên trái toán tử "<<" về bên trái với số lần là giá trị của biến bên phải toán tử "<<". Khi di chuyển, các bit tràn ra khỏi khung dữ liệu sẽ bị loại bỏ và các bit 0 sẽ điền vào các ô trống.
+```
+	uint8_t test = 0b 1001 0101;
+	test << 2;   //0b 0101 0100
+```
+- **Dịch phải (>>)**: Di chuyển các bit của biến bên trái toán tử ">>" về bên phải với số lần là giá trị của biến bên phải toán tử ">>". Khi di chuyển, các bit tràn ra khỏi khung dữ liệu sẽ bị loại bỏ và các bit 0 sẽ điền vào các ô trống (nếu số bị dịch là một số có dấu và có giá trị < 0 thì các bit 1 sẽ điền vào các ô trống).
+```
+	uint8_t test = 0b 1001 0101;
+	test >> 2;   //0b 0010 0101
+```
+## Bài 7: Pending Data
+### Struct
+- Từ khoá **struct** được sử dụng để định nghĩa một kiểu dữ liệu tuỳ biến cho phép nhóm các biến (có thể là các kiểu dữ liệu) thành một đơn vị duy nhất. Struct thường dùng để định nghĩa một kiểu dữ liệu có các thành phần biến con có liên quan đến nhau như các thanh ghi trong ngoại vi hay một gói tin cần truyền đi. Struct giúp code dễ đọc, tính bảo trì cao và có thể tái sử dụng dễ dàng.\
+Cách định nghĩa:
+```
+	typedef struct Test {
+		int x;
+		float y;
+		double z;
+	} Test;
+```
+Cách khai báo và truy cập đến các biến thành phần:
+```
+	Test test;
+	test.x;
+	test.y;
+	test.z;
+```
+- Khi khai báo kiểu dữ liệu struct, trình biên dịch sẽ sắp xếp các thành viên vào một ranh giới bộ nhớ cụ thể.
+	- Đầu tiên, trình biên dịch sẽ quét kiểu dữ liệu của các thành viên và chọn ra kiểu dữ liệu có kích thước lớn nhất làm kích thước cho 1 khung bộ nhớ.
+	- Tiếp theo, trình biên dịch sẽ nhét lần lượt các thành viên từ trên xuống dưới vào 1 khung bộ nhớ đó.
+	- Khi thành viên có kích thước lớn hơn phần trống của khung thì sẽ nhét vào khung bộ nhớ mới.
+	- Tính số khung cần dùng để nhét tất cả các thành viên, nhân với kích thước của một khung ta sẽ có được kích thước mà bộ nhớ dùng để chưa kiểu dữ liệu struct đó.
+	- (Hình ảnh)
+### Union
+- Từ khoá **union** được sử dụng để định nghĩa một kiểu dữ liệu tuỳ biến cho phép nhóm các biến (có thể là các kiểu dữ liệu) thành một đơn vị duy nhất. Khác với "struct", nơi mà các thành viên có bộ nhớ riêng thì với "union", các thành viên chia sẻ bộ nhớ với nhau để tiết kiệm bộ nhớ. Điều này đồng nghĩa với việc chỉ có 1 thành viên được hoạt động ở một thời điểm.\
+Cách định nghĩa:
+```
+	typedef union Test {
+		int x;
+		float y;
+		double z;
+	} Test;
+```
+Cách khai báo và truy cập đến các biến thành phần:
+```
+	Test test;
+	test.x;
+	test.y;
+	test.z;
+```
+- Khi khai báo kiểu dữ liệu union, trình biên dịch sẽ sắp xếp các thành viên vào một ranh giới bộ nhớ cụ thể.
+	- Đầu tiên, trình biên dịch sẽ quét kiểu dữ liệu của các thành viên và chọn ra kiểu dữ liệu có kích thước lớn nhất làm kích thước cho 1 khung bộ nhớ.
+	- Tiếp theo, trình biên dịch sẽ nhét lần lượt các thành viên từ trên xuống dưới vào 1 khung bộ nhớ đó.
+	- Khi thành viên có kích thước lớn hơn phần trống của khung thì sẽ nhét vào khung bộ nhớ mới.
+	- Sau khi nhét xong một thành viên, trình biên dịch sẽ sử dụng lại khung bộ nhớ đó để nhét một thành viên mới
+	- Tính số khung lớn nhất cần dùng để nhét một thành viên nào đó, nhân với kích thước của một khung ta sẽ có được kích thước mà bộ nhớ dùng để chưa kiểu dữ liệu union đó.
+## Bài 8: Memory Layout
+Các file .hex được nạp vào VĐK sẽ được lưu vào bộ nhớ FLASH sử dụng programmer hoặc bootloader. Khi VĐK được cấp nguồn thì chương trình sẽ được copy vào RAM để CPU thực thi những lệnh trong chương trình. RAM được phân thành những phân vùng sau:
+### Text
+- Chứa các mã máy (các lệnh được thực thi)
+- Lưu hằng số, con trỏ kiểu char
+- Chỉ có quyền đọc và thực thi, không có quyền ghi
+- Được thu hồi bộ nhớ khi chương trình kết thúc, tồn tại trong suốt vòng đời chương trình.
+### Data
+- Chứa các biến toàn cục, biến static đã được khởi tạo với giá trị khác 0
+- Có quyền đọc/ghi trong suốt vòng đời chương trình
+- Được thu hồi bộ nhớ khi chương trình kết thúc, tồn tại trong suốt vòng đời chương trình.
+### bss
+- Chứa các biến toàn cục, biến static chưa khởi tạo giá trị hoặc đã khởi tạo giá trị bằng 0
+- Có quyền đọc/ghi trong suốt vòng đời chương trình
+- Được thu hồi bộ nhớ khi chương trình kết thúc, tồn tại trong suốt vòng đời chương trình.
+### Heap
+- Quản lý bộ nhớ động được cấp phát trong quá trình thực thi chương trình và được quản lý bởi người lập trình
+- Bộ nhớ được cấp phát động bởi các hàm như malloc, calloc, realloc:
+	- malloc(size):
+ 		- Cấp phát bộ nhớ liên tục có kích thước là "size"
+   		- Bộ nhớ được cấp phát chưa được khởi tạo (giá trị rác)
+       	- Giá trị trả về là con trỏ void nếu thành công và NULL nếu thất bại
+	```
+ 		int *test1 = (int*)malloc(size * sizeof(int));		// Cấp phát "size" ô nhớ động dạng int hoặc có kích thước là "size * sizeof(int)" byte
+ 	```
+	- calloc(num, size):
+   		- Cấp phát một vùng nhớ động gồm "num" phần tử, mỗi phần tử có kích thước là "size"
+       	- Bộ nhớ được cấp phát có giá trị bằng 0
+       	- Giá trị trả về là con trỏ void nếu thành công và NULL nếu thất bại
+    ```
+    	char *test2 = (char*)calloc(num, sizeof(char));		// Cấp phát vùng nhớ gồm "num" ô kích thước là "sizeof(char)"
+    ```
+    - realloc(ptr, size):
+      	- Thay đổi kích thước của bộ nhớ đã được cấp phát trước đó (hoặc tạo bộ nhớ mới) mà không muốn mất dữ liệu đã lưu trữ trong vùng bộ nhớ đó hoặc có thể giải phóng bộ nhớ đã cấp
+      	- "ptr" là con trỏ tới vùng bộ nhớ cần thay đổi kích thước. Nếu "ptr" là NULL, realloc hoạt động như malloc.
+      	- "size" là kích thước mới của vùng bộ nhớ. Nếu "size" bằng 0 và "ptr" khác NULL thì realloc sẽ giải phóng bộ nhớ đã được khởi tạo được "ptr" trỏ tới.
+      	- Giá trị trả về là địa chỉ của vùng bộ nhớ mới với kích thước đã thay đổi hoặc là trả về NULL nếu thất bại hoặc giải phóng bộ nhớ thành công.
+    ```
+    	int *test3 = (int*)realloc(test1, (size + 1)*sizeof(int));
+    ```
+- Bộ nhớ được thu hồi bằng tay bởi lập trình viên với lệnh free(ptr). Hệ điều hành sẽ thu hồi toàn bộ bộ nhớ chưa được giải phóng sau khi chương trình kết thúc, tuy nhiên, nó sẽ dẫn đến rò rỉ bộ nhớ.
+```
+	free(test1);
+	free(test2);
+	free(test3);
+```
+### Stack
+- Được quản lý bởi hệ điều hành, chứa các biến toàn cục, các tham số truyền vào, địa chỉ trả về
+- Có quyền đọc/ghi trong suốt vòng đời chương trình
+- Các khung stack được tạo ra khi gọi hàm và sẽ thu hồi khi kết thúc hàm
+## Bài 9: Data Structures
+### JSON
+**JSON (avaScript Object Notation)** là một định dạng truyền tải dữ liệu phổ biến trong lập trình và giao tiếp giữa các máy chủ và trình duyệt web, cũng như giữa các hệ thống khác nhau. Mỗi đối tượng JSON bao gồm một tập hợp các cặp "key" và "value", trong khi mỗi mảng JSON là một tập hợp các giá trị.\
+Các định dạng của JSON bao gồm:
+```
+	typedef enum {
+    	JSON_NULL,
+    	JSON_BOOLEAN,
+    	JSON_NUMBER,
+    	JSON_STRING,
+    	JSON_ARRAY,
+    	JSON_OBJECT
+	} JsonType;
+```
+- JSON_NULL: Kiểu trống
+- JSON_BOOLEAN: Kiểu true/false
+- JSON_NUMBER: Kiểu số
+- JSON_STRING: Kiểu chuỗi ký tự, được nhận biết bằng "
+- JSON_ARRAY: Kiểu mảng, mỗi phần tử có thể là một trong các định dạng còn lại, được nhận biết bằng [
+- JSON_OBJECT: Kiểu đối tượng bao gồm các cặp "key" và "value" (phân tách nhau bằng dấu :), mỗi "value" có thể mọi loại định dạng JSON, được nhận biết rằng {\
+Vì một value chỉ có thể có 1 định dạng nên ta định nghĩa các định dạng JSON bằng "union"
+```
+	typedef union value {
+		int boolean;
+		double number;
+		char *string;
+		struct {
+			struct JsonValue *values;
+			size_t count;
+		} array;
+    	struct {
+			char **keys;
+			struct JsonValue *values;
+	    	size_t count;
+    	} object;
+	} value;
+```
+### Linked list
+**Linked List** là một cấu trúc dữ liệu gồm một chuỗi các phần tử, trong đó mỗi phần tử được gọi là một "node" (nút). Các nút được kết nối với nhau bằng cách sử dụng các con trỏ, tạo thành một chuỗi liên tiếp. Mỗi nút bao gồm:
+- Giá trị dữ liệu
+- Con trỏ tới địa chỉ của nút tiếp theo trong chuỗi. Nếu đây là nút cuối thì giá trị này sẽ là NULL.\
+```
+	typedef struct Node
+	{
+    	int value;
+    	struct Node* next;
+	} Node;
+```
+Linked list giúp các thao tác như thêm hay xoá các phần tử trong chuỗi được nhanh chóng và linh hoạt hơn khi sử dụng một mảng tĩnh, đặc biệt là đối với những chuỗi có rất nhiều thành viên. Linked list còn giúp việc quản lý bộ nhớ hiệu quả vì sử dụng những con trỏ đến liên kết các nút lại với nhau.
+### Stack
+**Stack** là một cấu trúc dữ liệu tuân theo nguyên tắc *Last In, First Out (LIFO)*. Các thao tác cơ bản trên stack là:
+- **pop**: Thêm một phần tử vào đỉnh của stack, không được thêm phần tử khi stack đầy.
+- **push**: Lấy và loại bỏ phần tử đỉnh của stack, không được lấy phần tử khi stack trống.
+- **top**: Trả về giá trị của phần tử đỉnh stack mà không loại bỏ nó.\
+Stack bao gồm những thành phần sau:
+- **size**: Kích thước stack, cho biết số phần tử tối đa được bỏ vào stack
+- **items**: Danh sách các phần tử
+- **top**: Vị trí của phần tử đỉnh stack, khi stack trống thì top = -1. Mỗi khi *pop* thì top++, *push* thì top--. (0 <= top < size)
+```
+	typedef struct Stack {
+    	int* items;
+    	int size;
+    	int top;
+	} Stack;
+```
+### Queue
+**Queue** là một cấu trúc dữ liệu tuân theo nguyên tắc *First In, First Out (FIFO)*. Các thao tác cơ bản trên queue là:
+- **enqueue**: Thêm một phần tử vào cuối queue, không được thêm phần tử khi queue đầy.
+- **dequeue**: Lấy và loại bỏ phần tử đầu của queue, không được lấy phần tử khi queue trống.
+- **front**: Trả về giá trị của phần tử đầu queue mà không loại bỏ nó, khi stack trống thì top = -1.\
+Queue bao gồm những thành phần sau:
+- **size**: Kích thước queue, cho biết số phần tử tối đa được bỏ vào queue
+- **items**: Danh sách các phần tử
+- **front**: Vị trí của phần tử đầu queue, khi queue trống thì front = -1. Mỗi khi *dequeue* thì front++, khi front >= size thì quay trở lại 0. (0 <= front < size)
+- **rear**: Vị trí của phần tử cuối queue, khi queue trống thì rear = -1. Mỗi khi *enqueue* thì rear++, khi rear >= size thì quay trở lại 0. (0 <= rear < size)
+```
+	typedef struct Queue {
+    	int* items;
+    	int size;
+    	int front, rear;
+	} Queue;
+```
+## Bài 10: Big excersize No.1
+### Binary Search
+**Binary Search** là một thuật toán tìm kiếm hiệu quả được sử dụng để tìm vị trí của một phần tử cụ thể trong một mảng đã được sắp xếp. Binary Search được sử dụng để tìm kiếm các bản ghi trong cơ sở dữ liệu được sắp xếp. Binary Search liên tục chia mảng thành hai nửa và loại bỏ một nửa không chứa phần tử cần tìm. Cụ thể như sau:
+- Sắp xếp mảng theo thứ tự tăng dần
+- Đặt phần tử đầu của mảng là *left* (ban đầu là 0), phần tử cuối của mảng là *right* (ban đầu là kích thước mảng -1)
+- Xác định phần tử nằm giữa (middle) của mảng bằng cách: (rigth - left)/2 và làm tròn lên
+- Nếu giá trị của middle là giá trị cần tìm thì trả về middle, nếu không:
+	- Nếu giá trị cần tìm > giá trị middle thì bỏ hết nửa mảng bên trái (left = mid + 1)
+ 	- Nếu giá trị cần tìm < giá trị middle thì bỏ hết nửa mảng bên phải (rigth = mid - 1)
+- Nếu right < left hoặc left > right, trong mảng không có giá trị cần tìm, trả về NULL
+- Lặp lại quá trình cho đến khi tìm được giá trị cần tìm.
+### File Operations
+File **CSV (Comma-Separated Values)** là một loại file văn bản được sử dụng để lưu trữ và truyền tải dữ liệu có cấu trúc dưới dạng bảng, trong đó các dữ liệu của các cột được phân tách bằng dấu phẩy (,) hoặc một ký tự ngăn cách khác. Ví dụ:
+```
+	Họ và tên, Tuổi, Địa chỉ, Số điện thoại
+	John Doe, 30, 123 Main St, 555-1234
+	Jane Smith, 25, 456 Oak St, 555-5678
+	Bob Johnson, 40, 789 Pine St, 555-8765
+```
+Ngôn ngữ lập trình C cung cấp một số thư viện và hàm tiêu biểu để thực hiện các thao tác với file:
+- **fopen**(const char *file_name, const char *access_mode): Mở file có địa chỉ "file_name" với chế độ truy cập "access_mode" bao gồm những kiểu như sau:
+	- r: Mở file với chế độ chỉ đọc file. Nếu mở file thành công thì trả về địa chỉ của phần tử đầu tiên trong file, nếu không thì trả về NULL.
+   	- w: Mở file với chế độ ghi vào file. Nếu file đã tồn tại, thì sẽ ghi đè vào nội dung bên trong file. Nếu file chưa tồn tại thì sẽ tạo một file mới. Nếu không mở được file thì trả về NULL.
+   	- a: Mở file với chế độ nối. Nếu mở file thành công thì trả về địa chỉ của phần tử cuối cùng trong file. Nếu file chưa tồn tại thì sẽ tạo một file mới. Nếu không mở được file thì trả về NULL.
+   	- r+: Mở file với chế độ đọc và ghi file. Nếu mở file thành công thì trả về địa chỉ của phần tử đầu tiên trong file, nếu không thì trả về NULL.
+   	- w+: Mở file với chế độ ghi và đọc file. Nếu file đã tồn tại thì trả về địa chỉ của phần tử đầu tiên của file. Nếu file chưa tồn tại thì sẽ tạo một file mới.
+   	- a+: Mở file với chế độ nối và đọc file. Nếu file đã tồn tại thì trả về địa chỉ của phần tử cuối cùng của file. Nếu file chưa tồn tại thì sẽ tạo một file mới.
+```
+	FILE *fp = fopen("test.csv", "a");
+```
+- errno_t **fopen_s**(FILE **file, const char *file_name, const char *access_mode): Tương tự như "fopen()", khác ở chỗ địa chỉ trả về của hàm sẽ gán về con trỏ FILE đã truyền vào tham số "FILE *file"
+```
+	FILE *fp;
+	fopen_s(&fp, "test.csv", "a");
+```
+- int **fscanf**(FILE *file, const char *format, ...): Đọc dữ liệu từ một tập tin theo định dạng cụ thể.
+	- **file**: Con trỏ đến tập tin
+	- **format**: Chuỗi định dạng (tương tự như scanf)
+	- ...: Danh sách các đối số để lưu trữ dữ liệu đọc được
+	- Hàm sẽ trả về số lượng các mục đã được đọc thành công hoặc trả về "EOF" nếu gặp lỗi hoặc đến cuối tập tin trước khi đọc được bất kỳ mục nào.
+```
+	FILE *fp;
+	int num;
+	char *str;
+
+	fscanf(fp, "%d %s", &num, str);
+```
+- char \***fgets**(char *buffer, int size, FILE *file): Đọc một dòng từ tập tin và lưu trữ nó vào một chuỗi.
+	- **buffer**: Mảng ký tự nơi lưu trữ chuỗi đọc được
+   	- **size**: Số lượng ký tự tối đa để đọc (bao gồm ký tự null kết thúc)
+   	- **file**: Con trỏ đến tập tin
+   	- Hàm sẽ trả về con trỏ đến chuỗi đọc được nếu thành công hoặc trả về "NULL" nếu gặp lỗi hoặc chạy đến cuối tập tin.
+```
+	FILE *fp;
+	int characterRead = 50;
+	char *buffer;
+
+	fgets(buffer, characterRead, fp);
+```
+- int **fgetc**(FILE *file): Đọc một ký tự từ tập tin. Hàm sẽ trả về Ký tự được đọc dưới dạng số nguyên hoặc "EOF" nếu gặp lỗi hoặc đến cuối tập tin.
+```
+	FILE *fp;
+
+	fgetc(fp);
+```
+- int **fread**(void *buffer, int size, int count, FILE *file): Đọc một số lượng phần tử từ tập tin vào bộ nhớ.
+	- **buffer**: Con trỏ đến bộ nhớ nơi lưu trữ dữ liệu đọc được
+   	- **size**: Kích thước của mỗi phần tử
+   	- **count**: Số lượng phần tử để đọc
+   	- Hàm trả về số lượng phần tử đã đọc thành công.
+```
+	FILE *fp;
+	char *buffer;
+	int characterRead = 50;
+
+	fread(buffer, sizeof(char), characterRead, fp);
+```
+- int **fprintf**(FILE *file, const char *format, ...): Ghi dữ liệu vào tập tin theo định dạng cụ thể.
+	- **format**: Chuỗi định dạng (tương tự như printf)
+   	- ...: Danh sách các đối số chứa dữ liệu cần ghi
+   	- Hàm trả về số lượng ký tự đã được ghi hoặc giá trị âm nếu xảy ra lỗi.
+```
+	FILE *fp;
+	int num = 50;
+	char *str = "Hello World!";
+
+	fprintf(fp, "Number: %d\n", num);
+	fprintf(fp, "String: %s", str);
+```
+- int **fputs**(const char *str, FILE *file): Ghi một chuỗi vào tập tin.
+	- **str**: Chuỗi cần ghi
+   	- Hàm trả về giá trị khác âm nếu ghi thành công hoặc EOF nếu gặp lỗi.
+```
+	FILE *fp;
+	char *str = "Hi";
+
+	fputs("Hello World!\n", fp);
+	fputs(str, fp);
+```
+- int **fputc**(int character, FILE *file): Ghi một ký tự vào tập tin.
+	- **character**: Ký tự cần ghi
+   	- Hàm trả về ký tự được ghi nếu thành công hoặc EOF nếu gặp lỗi.
+```
+	FILE *fp;
+	int character = 'B';
+
+	fputc('A', fp);
+	fputc(character, fp);
+```
+- int **fwrite**(const void *buffer, int size, int count, FILE *file): Ghi một số lượng phần tử từ bộ nhớ vào tập tin.
+	- **buffer**: Con trỏ đến bộ nhớ nơi lưu trữ dữ liệu cần ghi
+   	- **size**: Kích thước của mỗi phần tử
+   	- **count**: Số lượng phần tử cần ghi
+   	- Hàm trả về số lượng phần tử đã đọc thành công.
+```
+	FILE *fp;
+	int data[] = {1, 2, 3, 4, 5};
+
+    fwrite(data, sizeof(int), 5, fp);
+```
+- int **fclose**(FILE *file): Đóng một tập tin. Hàm trả về 0 nếu đóng thành công hoặc EOF nếu gặp lỗi.
+```
+	FILE *fp;
+
+	fclose(fp);
+```
+- int **feof**(FILE *file): Kiểm tra xem đã đến cuối tập tin chưa. Hàm trả về Giá trị khác 0 nếu đã đến cuối tập tin hoặc trả về 0 nếu chưa đến cuối tập tin.
+```
+	FILE *fp;
+
+	feof(fp);
+```
