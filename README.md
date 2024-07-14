@@ -292,7 +292,7 @@ Các file .hex được nạp vào VĐK sẽ được lưu vào bộ nhớ FLASH
 	free(test3);
 ```
 ### Stack
-- Được quản lý bởi hệ điều hành, chứa các biến toàn cục, các tham số truyền vào, địa chỉ trả về
+- Được quản lý bởi hệ điều hành, chứa các biến toàn cục, các tham số truyền vào
 - Có quyền đọc/ghi trong suốt vòng đời chương trình
 - Các khung stack được tạo ra khi gọi hàm và sẽ thu hồi khi kết thúc hàm
 ## Bài 9: Data Structures
