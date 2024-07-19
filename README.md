@@ -75,7 +75,7 @@ Ngoài ra, có thể sử dụng "\_\_VA_ARGS\_\_" để thay thế cho số lư
 ```
 **ASSERT** được dùng để debug, có thể để phòng ngừa những lỗi thuật toán hay lỗi toán học như chia cho 0. Để tắt tính năng debug thì dùng #define NDEBUG
 ## Bài 3: Advanced Pointer
-**Pointer (Con trỏ)** là một biến lưu giá trị địa chỉ bộ nhớ của biến khác. Pointer giúp các thao tác trên bộ nhớ được linh hoạt hơn. Kích thước của con trỏ phụ thuộc vào kiến trúc máy tính và trình biên dịch.\
+**Pointer (Con trỏ)** là một biến lưu giá trị địa chỉ bộ nhớ của đối tượng khác. Pointer giúp các thao tác trên bộ nhớ được linh hoạt hơn. Kích thước của con trỏ phụ thuộc vào kiến trúc của vi xử lý và trình biên dịch.\
 Cách khai báo:
 ```
     int *ptr = &value;
@@ -90,11 +90,11 @@ Ta có thể lấy địa chỉ của biến "test" thông qua con trỏ "ptr" n
     *ptr = 6;
 ```
 Sử dụng ký tự * giúp ta truy cập được giá trị của biến được biến con trỏ chỉ tới (dereference). Ở đây, ta sử dụng con trỏ "ptr" để truy cập vào giá trị của biến "test" và thay đổi nó bằng 6.\
-- **void pointer (con trỏ void)** là biến con trỏ có thể trỏ tới địa chỉ của mọi kiểu dữ liệu. Cách khai báo giống với khai báo con trỏ bình thường nhưng thay kiểu dữ liệu bằng "void"
+- **void pointer (con trỏ void)** là biến con trỏ trỏ tới một đối tượng chưa biết trước kiểu dữ liệu (tức là ta không thể biết giá trị của con trỏ). Cách khai báo giống với khai báo con trỏ bình thường nhưng thay kiểu dữ liệu bằng "void"
 ```
     void *ptr;
 ```
-Tuy nhiên, nếu muốn truy cập đến giá trị của của biến thông qua void pointer thì ta phải ép kiểu dữ liệu của nó:
+Void pointer có thể trỏ tới đối tượng với bất kỳ kiểu dữ liệu nào bằng cách ép kiểu dữ liệu của nó:
 ```
     int value = 5;
     void *ptr = &value;
@@ -148,9 +148,9 @@ Cách khai báo:
     extern int functoin2(int, int);
 ```
 ### Static
-- **Static Local (biến static cục bộ)** là một biến cục bộ có giá trị được giữ lại qua những lần gọi. Giải thích:
+- **Static Local (biến static cục bộ)** là một biến cục bộ có giá trị được giữ lại qua những lần gọi. Biến cục bộ là biến chỉ só giá trị sử dụng trong khu vực cục bộ đã khai báo nó. Giải thích:
     - Khi khai báo biến cục bộ không kèm từ khoá *static*, địa chỉ của biến sẽ được lưu vào phân vùng *stack*. Phân vùng stack sẽ thu hồi địa chỉ của biến cục bộ sau khi chương trình rời khỏi khu vực cục bộ của biến đó, nên sau khi thoát khỏi khu vực cục bộ này, địa chỉ của biến sẽ bị thu hồi và khi gọi lại khu vực cục bộ đó, máy tính sẽ khởi tạo lại biến đấy và mọi giá trị trước đó sẽ mất.
-    - Biến được khai báo static sẽ được lưu vào phân vùng *bss* (nếu bằng 0) hoặc *data* (nếu khác 0). 2 phân vùng này có điểm chung là sẽ chỉ thu hồi địa chỉ của biến sau khi chương trình kết thúc. Vì vậy, qua những lần gọi khu vực cục bộ khác nhau, địa chỉ của biến chưa bị thu hồi nên giá trị của biến tại địa chỉ đó chưa mất đi.
+    - Biến cục bộ được khai báo static sẽ được lưu vào phân vùng *bss* (nếu bằng 0) hoặc *data* (nếu khác 0). 2 phân vùng này có điểm chung là sẽ chỉ thu hồi địa chỉ của biến sau khi chương trình kết thúc. Vì vậy, qua những lần gọi khu vực cục bộ khác nhau, địa chỉ của biến chưa bị thu hồi nên giá trị của biến tại địa chỉ đó chưa mất đi.
 - **Static Global (biến static toàn cục)** là một biến toàn cục bị hạn chế phạm vi sử dụng chỉ trong file khai báo nó. Một biến toàn cục có thể dễ dàng được sử dụng bởi các file khác thông qua từ khoá *extern*, tuy nhiên khi khai báo biến toàn cục với *static*, nó sẽ chỉ cho phép file khai báo nó và không cho phép các file khác truy cập.
 ### Volatile
 Việc tối ưu hoá chương trình giúp tăng hiệu suất chương trình. Khi biến được khai báo kèm với từ khoá **volatile**, ta báo cho trình biên dịch biết rằng biến này có thể bị thay đổi bất ngờ hoặc không theo một quy luật nào đó của trình biên dịch, cho nên là đừng tối ưu biến đó. Điều này đảm bảo khi đọc giá trị biến này thì ta đang đọc giá trị mới nhất từ bộ nhớ của nó.
@@ -161,7 +161,7 @@ Volatile được sử dụng nhiều khi biến này được sử dụng chung
 ### Register
 - Khi một biến được khai báo bình thường, biến đó sẽ được lưu vào bộ nhớ RAM. Tuy nhiên khi muốn truy cập đến một biến nào đó, ta truy cập thanh ghi CPU sẽ nhanh hơn truy cập bộ nhớ RAM. Ngoài ra khi thực hiện các phép tính toán, CPU sẽ phải lưu biến đó vào 1 thanh ghi CPU và liên kết nó với biến trên RAM, sau đó từ thanh ghi sẽ đưa đến bộ ALU để tính toán và cập nhật lại trên thanh ghi, và từ thanh ghi sẽ trả lại giá trị về cho RAM. Điều này sẽ gây mất thời gian khi ta phải thực hiện phép toán nhiều lần trong khoảng thời gian ngắn.
 - Khi một biến được khai báo kèm từ khoá **register** ở phía trước, nó sẽ báo cho trình biên dịch biết rằng biến này sẽ được lưu vào 1 thanh ghi trên CPU. Điều này sẽ giúp việc truy cập đến biến đó sẽ diễn ra nhanh hơn. Tuy nhiên, trình biên dịch sẽ tối ưu hoá biến này khi không còn chỗ trên CPU hoặc thấy hiệu suất sử dụng của nó là không thoả đáng. Ngoài ra, ta không thể lấy địa chỉ của biến bằng toán tử "&" vì thanh ghi CPU không có địa chỉ bộ nhớ như RAM.
-- Các biến register có thể được sử dụng để giảm thời gian tính toán nhiều trong khoảng thời gian ngắn như vòng lặp hoặc để ứng dụng trong những dự án cần hoạt động nghiêm khắc ở thời gian thực.
+- Các biến register có thể được sử dụng để giảm thời gian tính toán nhiều lần trong khoảng thời gian ngắn như vòng lặp hoặc để ứng dụng trong những dự án cần hoạt động nghiêm khắc ở thời gian thực.
 ## Bài 6: Bit Manupilation
 **Bitmask** là một kỹ thuật được sử dụng để thao tác và quản lý từng bit riêng lẻ trong một số nguyên. Bitmask thường được sử dụng để tối ưu hóa bộ nhớ, thực hiện các phép toán logic trên một cụm bit, và quản lý các trạng thái, quyền truy cập, hoặc các thuộc tính khác của một đối tượng.\
 Các toán tử thường sử dụng trong bitmask như sau:
@@ -216,12 +216,10 @@ Cách khai báo và truy cập đến các biến thành phần:
 	test.y;
 	test.z;
 ```
-- Khi khai báo kiểu dữ liệu struct, trình biên dịch sẽ sắp xếp các thành viên vào một ranh giới bộ nhớ cụ thể.
-	- Đầu tiên, trình biên dịch sẽ quét kiểu dữ liệu của các thành viên và chọn ra kiểu dữ liệu có kích thước lớn nhất làm kích thước cho 1 khung bộ nhớ.
-	- Tiếp theo, trình biên dịch sẽ nhét lần lượt các thành viên từ trên xuống dưới vào 1 khung bộ nhớ đó.
-	- Khi thành viên có kích thước lớn hơn phần trống của khung thì sẽ nhét vào khung bộ nhớ mới.
-	- Tính số khung cần dùng để nhét tất cả các thành viên, nhân với kích thước của một khung ta sẽ có được kích thước mà bộ nhớ dùng để chưa kiểu dữ liệu struct đó.
-	- (Hình ảnh)
+- Kích thước của struct là tổng kích thước của các thành viên + padding (nếu có):
+	- Trình biên dịch sẽ quét qua các thành viên để tìm ra thành viên có kích thước lớn nhất để quyết định kích thước của 1 lần quét
+   	- Các thành viên từ trên xuống dưới sẽ được sắp xếp vào các ô nhớ trong một lần quét đó, nếu kích thước còn lại của lần quét không đủ để chứa 1 thành viên thì phần còn lại đó sẽ để cho padding và thành viên đó sẽ được xếp vào lần quét tiếp theo
+   	- Lặp lại quá trình trên cho đến khi tất cả các thành viên đã được sắp xếp vào các ô nhớ.
 ### Union
 - Từ khoá **union** được sử dụng để định nghĩa một kiểu dữ liệu tuỳ biến cho phép nhóm các biến (có thể là các kiểu dữ liệu) thành một đơn vị duy nhất. Khác với "struct", nơi mà các thành viên có bộ nhớ riêng thì với "union", các thành viên chia sẻ bộ nhớ với nhau để tiết kiệm bộ nhớ. Điều này đồng nghĩa với việc chỉ có 1 thành viên được hoạt động ở một thời điểm.\
 Cách định nghĩa:
@@ -239,12 +237,7 @@ Cách khai báo và truy cập đến các biến thành phần:
 	test.y;
 	test.z;
 ```
-- Khi khai báo kiểu dữ liệu union, trình biên dịch sẽ sắp xếp các thành viên vào một ranh giới bộ nhớ cụ thể.
-	- Đầu tiên, trình biên dịch sẽ quét kiểu dữ liệu của các thành viên và chọn ra kiểu dữ liệu có kích thước lớn nhất làm kích thước cho 1 khung bộ nhớ.
-	- Tiếp theo, trình biên dịch sẽ nhét lần lượt các thành viên từ trên xuống dưới vào 1 khung bộ nhớ đó.
-	- Khi thành viên có kích thước lớn hơn phần trống của khung thì sẽ nhét vào khung bộ nhớ mới.
-	- Sau khi nhét xong một thành viên, trình biên dịch sẽ sử dụng lại khung bộ nhớ đó để nhét một thành viên mới
-	- Tính số khung lớn nhất cần dùng để nhét một thành viên nào đó, nhân với kích thước của một khung ta sẽ có được kích thước mà bộ nhớ dùng để chưa kiểu dữ liệu union đó.
+- Kích thước của struct là kích thước của thành viên lớn nhất + padding (nếu có)
 ## Bài 8: Memory Layout
 Các file .hex được nạp vào VĐK sẽ được lưu vào bộ nhớ FLASH sử dụng programmer hoặc bootloader. Khi VĐK được cấp nguồn thì chương trình sẽ được copy vào RAM để CPU thực thi những lệnh trong chương trình. RAM được phân thành những phân vùng sau:
 ### Text
@@ -292,7 +285,7 @@ Các file .hex được nạp vào VĐK sẽ được lưu vào bộ nhớ FLASH
 	free(test3);
 ```
 ### Stack
-- Được quản lý bởi hệ điều hành, chứa các biến toàn cục, các tham số truyền vào, địa chỉ trả về
+- Được quản lý bởi hệ điều hành, chứa các biến toàn cục, các tham số truyền vào
 - Có quyền đọc/ghi trong suốt vòng đời chương trình
 - Các khung stack được tạo ra khi gọi hàm và sẽ thu hồi khi kết thúc hàm
 ## Bài 9: Data Structures
