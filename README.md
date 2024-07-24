@@ -502,6 +502,14 @@ Ngôn ngữ lập trình C cung cấp một số thư viện và hàm tiêu bi�
 
 	feof(fp);
 ```
+- int remove(const char *filename): Xoá một tập tin khỏi hệ thống. Hàm trả về 0 nếu thành công và khác 0 nếu thất bại.
+```
+	remove("Test.csv");
+```
+- int rename(const char *oldFilename, const char *newFilename): Đổi tên file hoặc di chuyển file.
+```
+	rename("Test.csv", "Another_Test.csv");
+```
 # C++
 -  Thư viện **\<iostream\>** là một phần của thư viện chuẩn của C++ được dùng để thao tác vào ra (input/output). Thư viện các đối tượng như "**cout**" để ghi dữ liệu ra màn hình hay "**cin**" đọc dữ liệu từ bàn phím.
 ```
