@@ -544,7 +544,7 @@ class className{
 Sau khi khai báo tên của class, bên trong class ta sẽ khai báo các phạm vi truy cập của các member trong class. Có 3 phạm vi truy cập:
 - **private**: Các thành viên chỉ có thể được truy cập từ bên trong lớp. Các thành viên này không thể được truy cập trực tiếp từ bên ngoài lớp. (Chỉ có các method khai báo trong class có thể truy cập đến các thành viên, các object không thể).
 - **public**: Các thành viên có thể được truy cập từ bất kỳ đâu, cả từ bên trong và bên ngoài lớp. (Nôm na là những object, các method bao gồm cả constructor và destructor được khai báo trong class sẽ truy cập được đến các thành viên).
-- **protected**: Các thành viên có thể được truy cập từ bên trong lớp và từ các lớp kế thừa, nhưng không thể được truy cập từ bên ngoài lớp.
+- **protected**: Các thành viên có thể được truy cập từ bên trong lớp và từ các lớp kế thừa, nhưng không thể được truy cập từ bên ngoài lớp.\
 Các thành viên trong class không chỉ có các biến hay các mảng như struct hay union ở C, class cho phép các thành viên có thể là hàm.
 ```
 class HinhChuNhat {
