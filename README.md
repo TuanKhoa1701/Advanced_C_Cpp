@@ -1,4 +1,4 @@
-# Avanced C/C++
+# Avanced C
 ## Bài 1: Compiler Process
 ### Compiler
 Máy tính không thể hiểu được những đoạn code mà chúng ta viết, chúng chỉ hiểu được những **mã máy**. Vậy nên, phải cần có một quá trình dịch những đoạn code ta viết thành mã máy. Đó là quá trình **COMPILE**.
@@ -502,3 +502,193 @@ Ngôn ngữ lập trình C cung cấp một số thư viện và hàm tiêu bi�
 
 	feof(fp);
 ```
+# C++
+-  Thư viện **\<iostream\>** là một phần của thư viện chuẩn của C++ được dùng để thao tác vào ra (input/output). Thư viện các đối tượng như "**cout**" để ghi dữ liệu ra màn hình hay "**cin**" đọc dữ liệu từ bàn phím.
+```
+#include <iostream>
+
+std::cout << "Hello World!" << std::endl;	//endl: endline (kết thúc dòng, dòng mới)
+
+std::cin >> number;
+std::cout << "You entered: " << number << std::endl;
+```
+Khi sử dụng chỉ thị:
+```
+using namespace std;
+```
+Bạn có thể bỏ tiền tố "std::" khi sử dụng cout và cin.
+```
+#include <iostream>
+using namespace  std;
+
+scout << "Hello World!" << endl;	//endl: endline (kết thúc dòng, dòng mới)
+
+cin >> number;
+cout << "You entered: " << number << endl;
+```
+- Thư viện **\<string\>** là một phần của thư viện chuẩn C++ và cung cấp lớp "std::string" để làm việc với các chuỗi ký tự.
+```
+#include <iostream>
+#include <string>
+using namespace std;
+
+string test = "Hello World!";
+cout << test << endl;
+```
+## Bài 11: Class
+Trong C++, từ khóa **class** được sử dụng để định nghĩa một lớp, là một cấu trúc dữ liệu tự định nghĩa có thể chứa dữ liệu và các hàm thành viên liên quan.
+```
+class className{
+};
+```
+Sau khi khai báo tên của class, bên trong class ta sẽ khai báo các phạm vi truy cập của các member trong class. Có 3 phạm vi truy cập:
+- **private**: Các thành viên chỉ có thể được truy cập từ bên trong lớp. Các thành viên này không thể được truy cập trực tiếp từ bên ngoài lớp. (Chỉ có các method khai báo trong class có thể truy cập đến các thành viên, các object không thể).
+- **public**: Các thành viên có thể được truy cập từ bất kỳ đâu, cả từ bên trong và bên ngoài lớp. (Nôm na là những object, các method bao gồm cả constructor và destructor được khai báo trong class sẽ truy cập được đến các thành viên).
+- **protected**: Các thành viên có thể được truy cập từ bên trong lớp và từ các lớp kế thừa, nhưng không thể được truy cập từ bên ngoài lớp.
+Các thành viên trong class không chỉ có các biến hay các mảng như struct hay union ở C, class cho phép các thành viên có thể là hàm.
+```
+class HinhChuNhat {
+public:
+    double chieuDai;
+    double chieuRong;
+	double tinhDienTich() {
+        return chieuDai * chieuRong;
+    }
+};
+```
+Ở C++, các thành viên là biến hay mảng sẽ được gọi là "property", các hàm sẽ được gọi là "method".\ 
+Nếu muốn truy cập đến các thành viên của class, ta sử dụng các cú pháp tương tự như struct hay union ở C:
+```
+HinhChuNhat hinh1;
+hinh1.chieuDai = 10.0;
+hinh1.chieuRong = 5.0;
+std::cout << "Dien tich: " << hinh1.tinhDienTich() << '\n';
+```
+Ở ví dụ trên, 'HinhChuNhat' là một kiểu dữ liệu và 'hinh1' là tên biến. Nhưng ở C++, 'HinhChuNhat' được gọi là "class" và 'hinh1' được gọi là "object".\
+Trong các quy tắc viết code trong C++, ta sẽ không viết định nghĩa của các method ở bên trong định nghĩa của class, ta phải định nghĩa các method riêng ở ngoài phần khai báo class.
+```
+class HinhChuNhat {
+public:
+    double chieuDai;
+    double chieuRong;
+	double tinhDienTich() {
+        return chieuDai * chieuRong;
+    }
+	void display();
+};
+
+void HinhChuNhat::display(){
+	std::cout << " Hello " << '\n';
+}
+```
+Nếu method có tham số truyền vào, ta có thể gán giá trị cho tham số ngay trên phần khai báo định nghĩa cho method. Đây gọi là tham số mặc định. Khi các object truy cập đến các method có tham số truyền vào nhưng không nhập gì cả thì trình biên dịch sẽ lấy tham số mặc định để gán cho method. Nếu object có truyền tham số vào method thì trình biên dịch sẽ truyền giá trị đó vào method thay cho tham số mặc định.\
+_Lưu ý_: Các tham số kiểu 'string' sẽ không cho phép tham số mặc định.
+```class HinhChuNhat {
+public:
+    double chieuDai;
+    double chieuRong;
+	double tinhDienTich() {
+        return chieuDai * chieuRong;
+    }
+	void display(int value = 10);	// Có thể để tham số truyền vào ở đây
+};
+
+void HinhChuNhat::display(int value){	// Hoặc ở đây
+	std::cout << " Hello: " << value << '\n';
+}
+```
+- **Constructor**: là một method sẽ được tự động gọi khi khởi tạo object. Constructor có tên trùng với tên class và không có kiểu trả về. Constructor thường được sử dụng để thiết lập các giá trị ban đầu cho các thuộc tính của đối tượng hoặc thực hiện các thao tác khởi tạo khác cần thiết.
+```
+class HinhChuNhat {
+public:
+	HinhChuNhat();
+    double chieuDai;
+    double chieuRong;
+	double tinhDienTich() {
+        return chieuDai * chieuRong;
+    }
+	void display();
+};
+HinhChuNhat::HinhChuNhat(){
+	chieuDai = 10;
+    chieuRong = 9;
+}
+```
+Nếu constructor có tham số truyền vào thì khai khai báo object, ta phải khai báo thêm các tham số cần truyền vào constructor.
+```
+class HinhChuNhat {
+public:
+	HinhChuNhat(double dai, double rong);
+    double chieuDai;
+    double chieuRong;
+	double tinhDienTich() {
+        return chieuDai * chieuRong;
+    }
+	void display();
+};
+HinhChuNhat::HinhChuNhat(double dai, double rong){
+	chieuDai = dai;
+    chieuRong = rong;
+}
+```
+```
+int main(){
+	HinhChuNhat hinh1(10, 9);
+}
+```
+- **Destructor** là một method dùng để dọn dẹp các tài nguyên mà một đối tượng đã chiếm dụng trước khi đối tượng bị giải phóng. Destuctor sẽ được tự động gọi khi object được giải phóng. Destructor sẽ có tên trùng với tên của class, thêm ký tự ~ ở phía trước tên và không có kiểu trả về. Destructor không nhận tham số truyền vào.
+```
+class HinhChuNhat {
+public:
+	HinhChuNhat(double dai, double rong);
+    double chieuDai;
+    double chieuRong;
+	double tinhDienTich() {
+        return chieuDai * chieuRong;
+    }
+	void display();
+	~HinhChuNhat();
+};
+HinhChuNhat::HinhChuNhat(double dai, double rong){
+	chieuDai = dai;
+    chieuRong = rong;
+}
+HinhChuNhat::~HinhChuNhat(){
+	std::cout << "Destructor " << '\n';
+}
+```
+Khi một object cục bộ được khai báo, chúng sẽ được lưu vào vùng nhớ _stack_. Khi thoát khỏi hàm, bộ nhớ sẽ giải phóng object đến sau trước rồi mới đến object tới đầu tiên (LIFO). Constructor của object nào chạy trước thì Destructor của object đó sẽ chạy sau và ngược lại.
+- Khi khai báo các object, bộ nhớ sẽ phân chia không gian khác nhau để chứa các object này, nên các địa chỉ của các property, method ở các object là khác nhau. Khi một property được khai báo "**static**" ở trong class, địa chỉ của property này là giống nhau ở mọi object và chúng sẽ có vòng đời trong suốt quá trình chương tình chạy. Các static property cần được khai báo trước để bộ nhớ dành cho nó không gian để các object có thể tham chiếu tới (vì static property độc lập với các object).
+```
+class HinhChuNhat {
+
+public:
+    double chieuDai;
+    double chieuRong;
+    static int var;
+};
+
+int HinhChuNhat::var = 0;
+```
+- Khi một method được khai báo kèm "**static**", method đó sẽ có những đặc điểm sau:
+	- Static method độc lập với các object
+	- Static method có thể được gọi mà không cần tạo object cho class đó.
+   	```
+    class HinhChuNhat {
+	public:
+    	double chieuDai;
+    	double chieuRong;
+    	static void display();
+	};
+
+	void HinhChuNhat::(){
+		cout << "Hello" << '\n';
+    }
+
+    int main(){
+    	HinhChuNhat::display();		// Truy cập đến display() không cần tạo object
+    }
+    ```
+    - Vì độc lập với các object nên static method không thể truy cập đến các property và method không static của class đó. Nếu muốn truy cập thì phải tạo object.
+    - Static method có thể truy cập đến các static property và static method bên trong và ngoài class của nó.
+    - Static method có vòng đời trong suốt quá trình chương trình chạy.
