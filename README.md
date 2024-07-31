@@ -700,3 +700,11 @@ int HinhChuNhat::var = 0;
     - Vì độc lập với các object nên static method không thể truy cập đến các property và method không static của class đó. Nếu muốn truy cập thì phải tạo object.
     - Static method có thể truy cập đến các static property và static method bên trong và ngoài class của nó.
     - Static method có vòng đời trong suốt quá trình chương trình chạy.
+## Bài 12: OOP
+**OOP (Object-Oriented Programming - Lập trình hướng đối tượng)** là một phương pháp lập trình mà trong đó mọi thứ được tổ chức xung quanh các *"object"*. OOP có 4 đặc tính:
+- **Encapsulation (tính đóng gói)**: là tính chất mà trong 1 class, ta phải để các property được bảo mật, tức là ta sẽ không cho phép các object truy cập trực tiếp đến các property. Để làm được điều này, ta phải khai báo các property trong phạm vi `private` hoặc `protected`. Nếu muốn truy cập đến các property này thì ta khai sử dụng các `method` ở phạm vi `public`.
+- **Inheritance (tính kế thừa)**: là khả năng sử dụng lại các property và method của một class (class con) trong một class khác (class cha). Class con sẽ có quyền truy cập đến các property và method có phạm vi `public` hoặc `protected`. Có 3 kiểu kế thừa:
+	- **Public**: Class con sẽ được thừa kế các thành viên của class cha với phạm vi truy cập tương ứng (nếu thành viên là public ở class cha sẽ là public ở class con, protected ở class cha sẽ là protected ở class con).
+   	- **Private**: Tất cả các thành viên được kế thừa của class cha sẽ có phạm vi truy cập `private` ở class con.
+   	- **Protected**: Tất cả các thành viên được kế thừa của class cha sẽ có phạm vi truy cập `protected` ở class con.
+- **Polymorphism (tính đa hình)**: là tính chất xảy ra khi có sự kế thừa của các class với chung một class cha.
