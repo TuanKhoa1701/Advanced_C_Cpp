@@ -708,3 +708,10 @@ int HinhChuNhat::var = 0;
    	- **Private**: Tất cả các thành viên được kế thừa của class cha sẽ có phạm vi truy cập `private` ở class con.
    	- **Protected**: Tất cả các thành viên được kế thừa của class cha sẽ có phạm vi truy cập `protected` ở class con.
 - **Polymorphism (tính đa hình)**: là tính chất xảy ra khi có sự kế thừa của các class với chung một class cha.
+- **Abstract (tính trừu tượng)**:
+_Note:_ Abstract Class (Lớp Trừu Tượng) là một lớp có ít nhất một phương thức pure virtual. Bạn không thể tạo đối tượng từ lớp trừu tượng. Các đối tượng phải được tạo từ các lớp kế thừa cung cấp triển khai đầy đủ cho các phương thức pure virtual.
+```
+	// AbstractShape shape;  // Không hợp lệ - không thể khởi tạo lớp trừu tượng
+    AbstractShape* shape = new Circle();  // Hợp lệ - khởi tạo lớp kế thừa,
+										// new là tạo object trên heap (bth tạo trên stack), cần giải phóng bằng delete
+```
