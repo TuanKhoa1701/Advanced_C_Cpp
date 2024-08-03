@@ -4,6 +4,27 @@
 
 using namespace std;
 
+#define DISPLAY_INFO(message, property) \
+    cout << message << property << endl;
+
+#define DISPLAY_BOOLEAN_INFO(message, property) \
+    cout << message;                            \
+    if (property)                               \
+    {                                           \
+        cout << "Yes" << endl;                  \
+    }                                           \
+    else                                        \
+        cout << "No" << endl;
+
+#define INPUT_STRING_INFO(message, property) \
+    cin.ignore();                            \
+    cout << message;                         \
+    getline(cin, property);
+
+#define INPUT_INFO(message, property) \
+    cout << message;                  \
+    cin >> property;
+
 class Car
 {
 protected:
@@ -39,58 +60,34 @@ public:
 
 void Sedan::displayInfo() const
 {
-    cout << "Model: " << this->model << endl;
-    cout << "Year of manufacture: " << this->year << endl;
-    cout << "Interior Material: " << this->interiorMaterial << endl;
-    cout << "Have sunroof?: ";
-    if (this->sunroof)
-    {
-        cout << "Yes" << endl;
-    }
-    else
-        cout << "No" << endl;
+    DISPLAY_INFO("Model: ", this->model)
+    DISPLAY_INFO("Year of manufacture: ", this->year)
+    DISPLAY_INFO("Interior Material: ", this->interiorMaterial)
+    DISPLAY_BOOLEAN_INFO("Have sunroof?: ", this->sunroof)
 }
 
 void Sedan::inputInfo()
 {
-    cin.ignore();
-    cout << "Enter the Sedan model: ";
-    getline(cin, this->model);
-    cout << "Enter the year of manufacture of the car: ";
-    cin >> this->year;
-    cin.ignore();
-    cout << "Enter the Sedan interior material: ";
-    getline(cin, this->interiorMaterial);
-    cout << "Do the Sedan have sunroof? [1/0]: ";
-    cin >> this->sunroof;
+    INPUT_STRING_INFO("Enter the Sedan model: ", this->model)
+    INPUT_INFO("Enter the year of manufacture of the car: ", this->year)
+    INPUT_STRING_INFO("Enter the Sedan interior material: ", this->interiorMaterial)
+    INPUT_INFO("Do the Sedan have sunroof? [1/0]: ", this->sunroof)
 }
 
 void SUV::displayInfo() const
 {
-    cout << "Model: " << this->model << endl;
-    cout << "Year of manufacture: " << this->year << endl;
-    cout << "Have AWD?: ";
-    if (this->allWheelDrive)
-    {
-        cout << "Yes" << endl;
-    }
-    else
-        cout << "No" << endl;
-    cout << "Cargo capacity: " << this->cargoCapacity << endl;
+    DISPLAY_INFO("Model: ", this->model)
+    DISPLAY_INFO("Year of manufacture: ", this->year)
+    DISPLAY_BOOLEAN_INFO("Have AWD?: ", this->allWheelDrive)
+    DISPLAY_INFO("Cargo capacity: ", this->cargoCapacity)
 }
 
 void SUV::inputInfo()
 {
-    cin.ignore();
-    cout << "Enter the SUV model: ";
-    getline(cin, this->model);
-    cout << "Enter the year of manufacture of the car: ";
-    cin >> this->year;
-    cin.ignore();
-    cout << "Do the Sedan have AWD? [1/0]: ";
-    cin >> this->allWheelDrive;
-    cout << "Enter the cargo capacity of the car: ";
-    cin >> this->cargoCapacity;
+    INPUT_STRING_INFO("Enter the SUV model: ", this->model)
+    INPUT_INFO("Enter the year of manufacture of the car: ", this->year)
+    INPUT_INFO("Do the Sedan have AWD? [1/0]: ", this->allWheelDrive)
+    INPUT_INFO("Enter the cargo capacity of the car: ", this->cargoCapacity)
 }
 
 int main()
