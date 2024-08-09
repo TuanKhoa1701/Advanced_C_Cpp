@@ -18,18 +18,14 @@ protected:
 
 public:
     Student();
-    int checkGrade(float grade);
+    bool isGradeValid(float grade);
     void inputInfo();
     void displayInfo() const;
     void calculateAverage();
     Grade determineGrade();
-    // auto getID() const;
-    // auto getName() const;
-    // auto getAverage() const;
-    // auto getMath() const;
-    // auto getPhysics() const;
-    // auto getChemistry() const;
-    auto getProperty(string property) const;
+    int getID() const;
+    string getName() const;
+    float getGrade(string grade) const;
 };
 
 #endif

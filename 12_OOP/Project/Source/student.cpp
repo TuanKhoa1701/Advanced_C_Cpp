@@ -26,7 +26,7 @@ void Student::inputInfo()
     // Input math grade
     cout << "Enter math grade: ";
     cin >> this->math;
-    while (this->checkGrade(this->math) < 0)
+    while (this->isGradeValid(this->math) < 0)
     {
         cout << "Enter a valid math grade: ";
         cin >> this->math;
@@ -35,7 +35,7 @@ void Student::inputInfo()
     // Input physics grade
     cout << "Enter physics grade: ";
     cin >> this->physics;
-    while (this->checkGrade(this->physics) < 0)
+    while (this->isGradeValid(this->physics) < 0)
     {
         cout << "Enter a valid physics grade: ";
         cin >> this->physics;
@@ -44,7 +44,7 @@ void Student::inputInfo()
     // Input chemistry grade
     cout << "Enter chemistry grade: ";
     cin >> this->chemistry;
-    while (this->checkGrade(this->chemistry) < 0)
+    while (this->isGradeValid(this->chemistry) < 0)
     {
         cout << "Enter a valid chemistry grade: ";
         cin >> this->chemistry;
@@ -54,13 +54,13 @@ void Student::inputInfo()
     cout << "-------------------------" << endl;
 }
 
-int Student::checkGrade(float grade)
+bool Student::isGradeValid(float grade)
 {
-    int returnValue = -1;
+    bool returnValue = false;
     if (grade < (float)0 || grade > (float)10)
         grade = -1;
     else
-        returnValue = 1;
+        returnValue = true;
     return returnValue;
 }
 
@@ -113,25 +113,25 @@ Grade Student::determineGrade()
     return this->grade;
 }
 
-auto Student::getProperty(string property) const
+float Student::getGrade(string grade) const
 {
-    if (property == "name")
+    CHECK_GRADE(math)
+    CHECK_GRADE(physics)
+    CHECK_GRADE(chemistry)
+    CHECK_GRADE(average)
+    else
     {
-        return this->name;
+        cout << "Invalid grade type" << endl;
+        return -1;
     }
-    else if ()
 }
 
-// int Student::getID() const
-// {
-//     return this->id;
-// }
+int Student::getID() const
+{
+    return this->id;
+}
 
-// string Student::getName() const
-// {
-//     return this->name;
-// }
-
-// float Student::getAverage() const{
-//     return this->average;
-// }
+string Student::getName() const
+{
+    return this->name;
+}
