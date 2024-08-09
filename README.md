@@ -709,9 +709,39 @@ int HinhChuNhat::var = 0;
    	- **Protected**: Tất cả các thành viên được kế thừa của class cha sẽ có phạm vi truy cập `protected` ở class con.
 - **Polymorphism (tính đa hình)**: là tính chất xảy ra khi có sự kế thừa của các class với chung một class cha.
 - **Abstract (tính trừu tượng)**:
-_Note:_ Abstract Class (Lớp Trừu Tượng) là một lớp có ít nhất một phương thức pure virtual. Bạn không thể tạo đối tượng từ lớp trừu tượng. Các đối tượng phải được tạo từ các lớp kế thừa cung cấp triển khai đầy đủ cho các phương thức pure virtual.
-```
+	- **Virtual method (Method ảo)**: là một method trong class cha có thể được ghi đè (`override`) trong các lớp con. Khi bạn khai báo một method là `virtual`, bạn cho phép lớp con cung cấp một phiên bản cụ thể của phương thức đó.
+   	- **Pure Virtual Method (Method thuần ảo)**: là một method trong lớp cha mà bạn yêu cầu các lớp con phải cung cấp cài đặt cụ thể. Lớp cha chứa phương thức thuần ảo không thể được khởi tạo và được gọi là `lớp trừu tượng`.\
+_Note_:
+	- Khi gọi method qua con trỏ hoặc tham chiếu đến lớp cha, method từ lớp con sẽ được gọi nếu lớp con override phương thức đó.
+	- Nếu `method ảo` có sử dụng property kiểu `protected` và không bị override, giá trị property của lớp con sẽ được sử dụng nếu property đó được thay đổi trong lớp con (khi object con được tạo thông qua con trỏ đến lớp cha).
+ 	```
+  	class Base {
+	protected:
+    	string type = "Base";  // Thuộc tính được kế thừa
+
+	public:
+    	virtual string getType() const {  // Phương thức ảo
+        	return type;
+    	}
+	};
+
+	class Derived : public Base {
+	public:
+    	Derived() {
+        	type = "DerivedType";  // Thay đổi giá trị thuộc tính trong lớp con
+    	}
+    	// Không ghi đè phương thức getType()
+	};
+
+	int main() {
+    	Base* object = new Derived();
+    	cout << object->getType() << endl;  // In ra: DerivedType
+    	delete object;
+	}
+  	```
+	- **Abstract Class (Lớp Trừu Tượng)** là một lớp có ít nhất một method thuần ảo. Bạn không thể tạo đối tượng từ lớp trừu tượng. Các đối tượng phải được tạo từ các lớp kế thừa cung cấp triển khai đầy đủ cho các phương thức pure virtual.
+	```
 	// AbstractShape shape;  // Không hợp lệ - không thể khởi tạo lớp trừu tượng
     AbstractShape* shape = new Circle();  // Hợp lệ - khởi tạo lớp kế thừa,
 										// new là tạo object trên heap (bth tạo trên stack), cần giải phóng bằng delete
-```
+	```
