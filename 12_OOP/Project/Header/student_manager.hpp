@@ -8,20 +8,20 @@ class StudentManager
 {
 private:
     list<Student> studentDatabase;
+    static string currentGradeType;
 
 public:
     void addStudent();
-    void addStudentInit();
-    void updateStudentById(const int id);
     void updatedStudentInit();
     void deleteStudentById(const int id);
     void deleteStudentInit();
     Student *findStudentById(const int id);
     void findStudentInit();
-    bool compareByName(const Student &a, const Student &b);
-    bool compareByGrade(const Student &a, const Student &b, string field);
+    static bool compareByName(const Student &a, const Student &b);
+    static bool compareByGrade(const Student &a, const Student &b);
     void sortByName();
-    void sortByGrade();
+    void sortByGrade(const string &gradeType);
+    void saveToCSV(const char *filename);
     void displayAllStudent() const;
 };
 

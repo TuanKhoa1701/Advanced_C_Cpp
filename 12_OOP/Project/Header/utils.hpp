@@ -4,36 +4,54 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include <variant>
 
 using namespace std;
 
-#define DEFINITION_COMPARE_STUDENT(field)                                                            \
-	DECLARATION_COMPARE_STUDENT(field)                                                               \
-	{                                                                                                \
-		if (#field == "Average" || #field == "Math" || #field == "Chemistry" || #field == "Physics") \
-		{                                                                                            \
-			return (a.getGrade(field) < b.getGrade(field));                                          \
-		}                                                                                            \
-		else                                                                                         \
-			return (a.get##field() < b.get##field());                                                \
+#define INPUT_STRING_INFO(message, property) \
+	cin.ignore();                            \
+	cout << message;                         \
+	getline(cin, property)
+
+#define INPUT_INFO(message, property) \
+	cout << message;                  \
+	cin >> property
+
+#define INPUT_GRADE(gradeType)                                               \
+	INPUT_INFO("Enter " #gradeType " grade: ", this->gradeType);             \
+	while (!(this->isGradeValid(this->gradeType)))                           \
+	{                                                                        \
+		INPUT_INFO("Enter a valid " #gradeType " grade: ", this->gradeType); \
 	}
 
-#define DECLARATION_COMPARE_STUDENT(field) \
-	bool compareBy##field(const Student &a, const Student &b)
-
-#define CHECK_GRADE(name)  \
-	if (grade == #name)    \
-	{                      \
-		return this->name; \
+#define CHECK_PROPERTY(infoType, propertyName, function) \
+	if (infoType == #propertyName)                       \
+	{                                                    \
+		function                                         \
 	}
 
-typedef enum Grade
+#define GET_PROPERTY(propertyName) return this->propertyName;
+#define SET_PROPERTY(propertyName)                         \
+	checkFlag = true;                                      \
+	string value;                                          \
+	INPUT_STRING_INFO("Enter " #propertyName ": ", value); \
+	this->propertyName = value;
+
+#define COMPARE_GRADE(field)                                                \
+	bool StudentManager::compareByGrade(const Student &a, const Student &b) \
+	{                                                                       \
+		return a.getGrade(field) < b.getGrade(field);                       \
+	}
+
+void continueOption(string message);
+
+typedef enum Rank
 {
 	GIOI,
 	KHA,
 	TRUNG_BINH,
 	YEU,
 	UNKNOWN
-} Grade;
+} Rank;
 
 #endif

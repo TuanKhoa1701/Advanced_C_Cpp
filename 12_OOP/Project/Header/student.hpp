@@ -14,7 +14,7 @@ protected:
     float physics;
     float chemistry;
     float average;
-    Grade grade;
+    string rank;
 
 public:
     Student();
@@ -22,10 +22,14 @@ public:
     void inputInfo();
     void displayInfo() const;
     void calculateAverage();
-    Grade determineGrade();
+    Rank determineRank();
+
+    void setInfo(const string &info);
+
     int getID() const;
-    string getName() const;
-    float getGrade(string grade) const;
+    string getString(const string &info) const;
+    float getGrade(const string &grade) const;
+    string getRank();
 };
 
 #endif

@@ -14,43 +14,17 @@ Student::Student()
 
 void Student::inputInfo()
 {
-    cout << "Enter name: ";
-    cin >> this->name;
-
-    cout << "Enter age: ";
-    cin >> this->age;
-
-    cout << "Enter gender: ";
-    cin >> this->gender;
+    this->setInfo("name");
+    INPUT_INFO("Enter age: ", this->age);
+    this->setInfo("gender");
 
     // Input math grade
-    cout << "Enter math grade: ";
-    cin >> this->math;
-    while (this->isGradeValid(this->math) < 0)
-    {
-        cout << "Enter a valid math grade: ";
-        cin >> this->math;
-    }
+    INPUT_GRADE(math)
+    INPUT_GRADE(physics)
+    INPUT_GRADE(chemistry)
 
-    // Input physics grade
-    cout << "Enter physics grade: ";
-    cin >> this->physics;
-    while (this->isGradeValid(this->physics) < 0)
-    {
-        cout << "Enter a valid physics grade: ";
-        cin >> this->physics;
-    }
-
-    // Input chemistry grade
-    cout << "Enter chemistry grade: ";
-    cin >> this->chemistry;
-    while (this->isGradeValid(this->chemistry) < 0)
-    {
-        cout << "Enter a valid chemistry grade: ";
-        cin >> this->chemistry;
-    }
     this->calculateAverage();
-    this->grade = this->determineGrade();
+    this->getRank();
     cout << "-------------------------" << endl;
 }
 
@@ -66,31 +40,15 @@ bool Student::isGradeValid(float grade)
 
 void Student::displayInfo() const
 {
+    cout << "------------------------" << endl;
     cout << "ID:    " << this->id << endl;
     cout << "Name:  " << this->name << endl;
     cout << "Age:   " << this->age << endl;
     cout << "Gender:    " << this->gender << endl;
-    cout << "   Math    |   Physics |   Chemistry   " << endl;
-    cout << "   " << math << " |  " << physics << "   |   " << chemistry << "  " << endl;
+    cout << "    Math    |    Physics    |    Chemistry    " << endl;
+    cout << "" << math << "" << physics << "" << chemistry << "" << endl;
     cout << "Average:   " << this->average << endl;
-    switch (this->grade)
-    {
-    case GIOI:
-        cout << "Grade: GIOI" << endl;
-        break;
-    case KHA:
-        cout << "Grade: KHA" << endl;
-        break;
-    case TRUNG_BINH:
-        cout << "Grade: TRUNG BINH" << endl;
-        break;
-    case YEU:
-        cout << "Grade: YEU" << endl;
-        break;
-    default:
-        cout << "Grade: UNKNOWN" << endl;
-        break;
-    }
+    cout << "Rank:   " << this->rank << endl;
 }
 
 void Student::calculateAverage()
@@ -98,32 +56,40 @@ void Student::calculateAverage()
     this->average = (this->math + this->physics + this->chemistry) / 3;
 }
 
-Grade Student::determineGrade()
+Rank Student::determineRank()
 {
     if (this->average >= 9)
-        this->grade = GIOI;
+        return GIOI;
     else if (this->average >= 7)
-        this->grade = KHA;
+        return KHA;
     else if (this->average >= 5)
-        this->grade = TRUNG_BINH;
+        return TRUNG_BINH;
     else if (this->average >= 0)
-        this->grade = YEU;
+        return YEU;
     else
-        this->grade = UNKNOWN;
-    return this->grade;
+        return UNKNOWN;
 }
 
-float Student::getGrade(string grade) const
+void Student::setInfo(const string &info)
 {
-    CHECK_GRADE(math)
-    CHECK_GRADE(physics)
-    CHECK_GRADE(chemistry)
-    CHECK_GRADE(average)
-    else
+    bool checkFlag = false;
+    CHECK_PROPERTY(info, name, SET_PROPERTY(name))
+    CHECK_PROPERTY(info, gender, SET_PROPERTY(gender))
+    if (!checkFlag)
     {
-        cout << "Invalid grade type" << endl;
-        return -1;
+        cout << "Invalid info" << endl;
+        return;
     }
+}
+
+float Student::getGrade(const string &grade) const
+{
+    CHECK_PROPERTY(grade, math, GET_PROPERTY(math))
+    CHECK_PROPERTY(grade, physics, GET_PROPERTY(physics))
+    CHECK_PROPERTY(grade, chemistry, GET_PROPERTY(chemistry))
+    CHECK_PROPERTY(grade, average, GET_PROPERTY(average))
+    cout << "Invalid grade" << endl;
+    return -1;
 }
 
 int Student::getID() const
@@ -131,7 +97,34 @@ int Student::getID() const
     return this->id;
 }
 
-string Student::getName() const
+string Student::getString(const string &info) const
 {
-    return this->name;
+    CHECK_PROPERTY(info, name, GET_PROPERTY(name))
+    CHECK_PROPERTY(info, gender, GET_PROPERTY(gender))
+    cout << "Invalid info" << endl;
+    return "";
+}
+
+string Student::getRank()
+{
+    Rank studentRank = this->determineRank();
+    switch (studentRank)
+    {
+    case GIOI:
+        this->rank = "GIOI";
+        break;
+    case KHA:
+        this->rank = "KHA";
+        break;
+    case TRUNG_BINH:
+        this->rank = "TRUNG BINH";
+        break;
+    case YEU:
+        this->rank = "YEU";
+        break;
+    default:
+        this->rank = "UNKNOWN";
+        break;
+    }
+    return this->rank;
 }
