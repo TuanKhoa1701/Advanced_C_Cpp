@@ -1,4 +1,4 @@
-#include "Header/utils.hpp"
+#include "Header/main.hpp"
 #include "Header/student.hpp"
 
 Student::Student()
@@ -14,15 +14,17 @@ Student::Student()
 
 void Student::inputInfo()
 {
+    // Input basic info
     this->setInfo("name");
     INPUT_INFO("Enter age: ", this->age);
     this->setInfo("gender");
 
-    // Input math grade
+    // Input grade
     INPUT_GRADE(math)
     INPUT_GRADE(physics)
     INPUT_GRADE(chemistry)
 
+    // Calculate average and rank
     this->calculateAverage();
     this->getRank();
     cout << "-------------------------" << endl;
@@ -73,8 +75,23 @@ Rank Student::determineRank()
 void Student::setInfo(const string &info)
 {
     bool checkFlag = false;
-    CHECK_PROPERTY(info, name, SET_PROPERTY(name))
-    CHECK_PROPERTY(info, gender, SET_PROPERTY(gender))
+    CHECK_PROPERTY(info, name, SET_STRING(name))
+    CHECK_PROPERTY(info, gender, SET_STRING(gender))
+    if (!checkFlag)
+    {
+        cout << "Invalid info" << endl;
+        return;
+    }
+}
+
+void Student::setGrade(const string &grade)
+{
+    bool checkFlag = false;
+    CHECK_PROPERTY(grade, age, SET_GRADE(age))
+    CHECK_PROPERTY(grade, math, SET_GRADE(math))
+    CHECK_PROPERTY(grade, physics, SET_GRADE(physics))
+    CHECK_PROPERTY(grade, chemistry, SET_GRADE(chemistry))
+    CHECK_PROPERTY(grade, average, SET_GRADE(average))
     if (!checkFlag)
     {
         cout << "Invalid info" << endl;

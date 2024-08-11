@@ -45,7 +45,9 @@
         "random": "cpp",
         "string_view": "cpp",
         "limits": "cpp",
-        "numbers": "cpp"
+        "numbers": "cpp",
+        "any": "cpp",
+        "variant": "cpp"
     },
     "code-runner.executorMap": {
         "cpp": "cd $dir && make && ./main"

@@ -1,7 +1,7 @@
 #ifndef __STUDENT_MANAGER_HPP__
 #define __STUDENT_MANAGER_HPP__
 
-#include "utils.hpp"
+#include "main.hpp"
 #include "student.hpp"
 
 class StudentManager
@@ -12,15 +12,14 @@ private:
 
 public:
     void addStudent();
-    void updatedStudentInit();
-    void deleteStudentById(const int id);
-    void deleteStudentInit();
+    void updatedStudent();
+    void deleteStudent();
     Student *findStudentById(const int id);
-    void findStudentInit();
+    list<Student *> findStudentByName(const string &name);
+    void findStudent();
     static bool compareByName(const Student &a, const Student &b);
     static bool compareByGrade(const Student &a, const Student &b);
-    void sortByName();
-    void sortByGrade(const string &gradeType);
+    void sortStudent();
     void saveToCSV(const char *filename);
     void displayAllStudent() const;
 };

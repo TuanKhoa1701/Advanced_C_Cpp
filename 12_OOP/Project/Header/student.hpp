@@ -1,7 +1,7 @@
 #ifndef __STUDENT_HPP__
 #define __STUDENT_HPP__
 
-#include "utils.hpp"
+#include "main.hpp"
 
 class Student
 {
@@ -25,6 +25,7 @@ public:
     Rank determineRank();
 
     void setInfo(const string &info);
+    void setGrade(const string &grade);
 
     int getID() const;
     string getString(const string &info) const;

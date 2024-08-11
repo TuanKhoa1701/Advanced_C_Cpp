@@ -2,6 +2,7 @@
 
 int main()
 {
+    const char *filename = "student_database.csv";
     StudentManager sv;
     cout << "Student Manager" << endl;
     while (1)
@@ -29,35 +30,65 @@ int main()
             while (continueOption == 1)
             {
                 sv.addStudent();
-                cout << "1. Add a student" << endl;
+                cout << "1. Add another student" << endl;
                 cout << "0. Return" << endl;
                 INPUT_INFO("Choose an option: ", continueOption);
             }
             break;
         }
         case 2:
-            sv.updatedStudentInit();
+        {
+            int continueOption = 1;
+            while (continueOption == 1)
+            {
+                sv.updatedStudent();
+                cout << "1. Update another student" << endl;
+                cout << "0. Return" << endl;
+                INPUT_INFO("Choose an option: ", continueOption);
+            }
             break;
+        }
         case 3:
-            sv.deleteStudentInit();
+        {
+            int continueOption = 1;
+            while (continueOption == 1)
+            {
+                sv.deleteStudent();
+                cout << "1. Delete another student" << endl;
+                cout << "0. Return" << endl;
+                INPUT_INFO("Choose an option: ", continueOption);
+            }
             break;
+        }
         case 4:
-            sv.findStudentInit();
+        {
+            int continueOption = 1;
+            while (continueOption == 1)
+            {
+                sv.findStudent();
+                cout << "1. Find another student" << endl;
+                cout << "0. Return" << endl;
+                INPUT_INFO("Choose an option: ", continueOption);
+            }
             break;
-        // case 5:
-        // 	sv.sortStudentsByName();
-        // 	sv.displayAllStudent();
-        // 	break;
-        // case 6:
-        // 	sv.sortStudentsByAverage();
-        // 	sv.displayAllStudent();
-        // 	break;
-        // case 7:
-        // 	sv.sortStudentsById();
-        // 	sv.displayAllStudent();
-        // 	break;
+        }
+        case 5:
+        {
+            int continueOption = 1;
+            while (continueOption == 1)
+            {
+                sv.sortStudent();
+                cout << "1. Sort by other type" << endl;
+                cout << "0. Return" << endl;
+                INPUT_INFO("Choose an option: ", continueOption);
+            }
+            break;
+        }
         case 6:
             sv.displayAllStudent();
+            break;
+        case 7:
+            sv.saveToCSV(filename);
             break;
         default:
             cout << "Invalid option" << endl;
