@@ -1,0 +1,10 @@
+{
+    "code-runner.executorMap": {
+        "cpp": "$dir && make all",
+    },
+    "files.associations": {
+        "iostream": "cpp",
+        "initializer_list": "cpp",
+        "ostream": "cpp"
+    }
+}
