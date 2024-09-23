@@ -717,31 +717,77 @@ _Note_:
  	```
   	class Base {
 	protected:
-    	string type = "Base";  // Thuộc tính được kế thừa
+    		string type = "Base";  // Thuộc tính được kế thừa
 
 	public:
-    	virtual string getType() const {  // Phương thức ảo
-        	return type;
-    	}
+    		virtual string getType() const {  // Phương thức ảo
+        		return type;
+    		}
 	};
 
 	class Derived : public Base {
 	public:
-    	Derived() {
-        	type = "DerivedType";  // Thay đổi giá trị thuộc tính trong lớp con
-    	}
+    		Derived() {
+        		type = "DerivedType";  // Thay đổi giá trị thuộc tính trong lớp con
+    		}
     	// Không ghi đè phương thức getType()
 	};
 
 	int main() {
-    	Base* object = new Derived();
-    	cout << object->getType() << endl;  // In ra: DerivedType
-    	delete object;
+    		Base* object = new Derived();
+    		cout << object->getType() << endl;  // In ra: DerivedType
+    		delete object;
 	}
   	```
 	- **Abstract Class (Lớp Trừu Tượng)** là một lớp có ít nhất một method thuần ảo. Bạn không thể tạo đối tượng từ lớp trừu tượng. Các đối tượng phải được tạo từ các lớp kế thừa cung cấp triển khai đầy đủ cho các phương thức pure virtual.
 	```
 	// AbstractShape shape;  // Không hợp lệ - không thể khởi tạo lớp trừu tượng
     AbstractShape* shape = new Circle();  // Hợp lệ - khởi tạo lớp kế thừa,
-										// new là tạo object trên heap (bth tạo trên stack), cần giải phóng bằng delete
+	// new là tạo object trên heap (bth tạo trên stack), cần giải phóng bằng delete
 	```
+
+## Bài 13: Smart Pointer
+**Smart pointer (con trỏ thông minh)** được dùng để `quản lý tự động bộ nhớ` thông qua việc quản lý vòng đời của các đối tượng được cấp phát động. Smart Pointer giúp tránh những lỗi như memory leak hay dangling pointer bằng cách `tự động giải phóng bộ nhớ` khi không còn sử dụng.
+
+- **Unique pointer** là smart pointer có tính sở hữu duy nhất. Nghĩa là chỉ có một `unique_ptr` có thể sở hữu một đối tượng tại một thời điểm. Khi `unique_ptr` bị hủy, đối tượng mà nó sở hữu cũng bị hủy theo.
+```
+unique_ptr<int> ptr = make_unique<int>(10); //Tạo 1 đối tượng động của kiểu int và giá trị khởi tạo là 10
+```
+*Note*:
+- - Khi có 1 `unique_ptr` khác trỏ tới 1 vùng địa chỉ đã được sở hữu bởi 1 `unique_ptr` khác thì sẽ bị lỗi (delete `unique_ptr` đó).
+  - Ở ví dụ trên, `ptr` thực chất là 1 `pointer to object`, chứ không phải là 1 pointer nên không thể dereference như pointer thô được.
+
+*Các method thường sử dụng*:
+
+-   - **get()**: Trả về con trỏ thô đến đối tượng mà `unique_ptr` quản lý.
+    ```
+    int* rawPtr = ptr.get();  // rawPtr là con trỏ thô đến đối tượng 10
+    ```
+    - **release()**: Giải phóng quyền sở hữu của `unique_ptr` đối với đối tượng được quản lý và trả về con trỏ thô đến đối tượng đó.
+    ```
+    int* rawPtr = ptr.release();  // ptr không còn sở hữu đối tượng
+    ```
+    - **reset()**: Đặt lại `unique_ptr` để quản lý đối tượng khác (hoặc nullptr), giải phóng đối tượng hiện tại nếu có (thay thế con trỏ cũ bằng con trỏ mới)
+    ```
+    ptr.reset(new int(20));  // ptr quản lý đối tượng mới với giá trị 20
+    ptr.reset();             // Giải phóng đối tượng và đặt ptr thành nullptr
+
+    ```
+
+## Bài 14: Operator và Template
+Trong C++, các **Operator** có thể được định nghĩa lại (được gọi là `nạp chồng toán tử - operator overloading`) để sử dụng operator đó ở mục đích được định nghĩa lại khi làm việc với class chứa định nghĩa đó
+```
+class Complex {
+public:
+    int real, imag;
+
+    // Nạp chồng toán tử +
+    Complex operator + (const Complex& obj) {
+        Complex temp;
+        temp.real = real + obj.real;
+        temp.imag = imag + obj.imag;
+        return temp;
+    }
+};
+```
+**Template**
