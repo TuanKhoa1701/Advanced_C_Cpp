@@ -745,7 +745,42 @@ _Note_:
     AbstractShape* shape = new Circle();  // Hợp lệ - khởi tạo lớp kế thừa,
 	// new là tạo object trên heap (bth tạo trên stack), cần giải phóng bằng delete
 	```
+	- **Virtual Inheritance (Kế thừa ảo)** là một kiểu kế thừa dùng để giải quyết vấn đề *diamond problem* khi sử dụng đa kế thừa. Diamond problem là vấn đề lớp con khi gọi các member từ các lớp cha thì sẽ bị xung đột các phiên bản member đó ở các lớp cha. Ví dụ:
+	```
+ 	class A {
+	public:
+ 		void display() {
+        		cout << "Class A" << endl;
+    		}
+	};
 
+	class B : public A {
+    		// Lớp B kế thừa từ A
+	};
+
+	class C : public A {
+    		// Lớp C kế thừa từ A
+	};
+
+	class D : public B, public C {
+    		// Lớp D kế thừa từ cả B và C
+	};
+ 	```
+ 	Khi D gọi method `display` thì nó sẽ gọi từ các lớp B và C. Các lớp này gọi tới lớp A và sẽ bị xung đột vì lớp D không biết lấy phiên bản nào, phiên từ B gọi A hay C gọi A). Khi sử dụng kế thừa ảo, chỉ một bản sao duy nhất của lớp cơ sở sẽ được chia sẻ giữa các lớp con, thay vì tạo ra nhiều bản sao.
+  	```
+   	class B : public virtual A {
+    		// Kế thừa ảo từ A
+	};
+
+	class C : public virtual A {
+    		// Kế thừa ảo từ A
+	};
+
+	class D : public B, public C {
+    		// Kế thừa từ B và C
+	};
+   	```
+   	Trong ví dụ này, lớp B và C đều kế thừa ảo từ A. Do đó, lớp D sẽ chỉ có một bản sao duy nhất của lớp A, và sẽ không có sự xung đột khi gọi các thành phần từ lớp A.
 ## Bài 13: Smart Pointer
 **Smart pointer (con trỏ thông minh)** được dùng để `quản lý tự động bộ nhớ` thông qua việc quản lý vòng đời của các đối tượng được cấp phát động. Smart Pointer giúp tránh những lỗi như memory leak hay dangling pointer bằng cách `tự động giải phóng bộ nhớ` khi không còn sử dụng.
 
@@ -790,4 +825,72 @@ public:
     }
 };
 ```
-**Template**
+**Template** cho phép viết các đoạn mã tổng quát, có thể sử dụng với nhiều kiểu dữ liệu khác nhau mà không cần phải lặp lại mã. Template được chia thành hai loại chính:
+- **Function Template** cho phép định nghĩa một hàm mà có thể hoạt động với nhiều kiểu dữ liệu khác nhau.
+```
+template <typename T>
+T add(T a, T b) {
+    return a + b;
+}
+
+int main() {
+    int result1 = add(5, 3);      	// Sử dụng với int
+    double result2 = add(2.5, 3.5); // Sử dụng với double
+    cout << result1 << endl; 		// Output: 8
+    cout << result2 << endl; 		// Output: 6.0
+}
+```
+```
+// Function Template với nhiều tham số kiểu
+template <typename T1, typename T2>
+void print(T1 a, T2 b) {
+    cout << a << " " << b << endl;
+}
+```
+- **Class Template** cho phép định nghĩa một lớp mà có thể hoạt động với nhiều kiểu dữ liệu khác nhau. Tương tự như function template, class template giúp tạo ra các lớp tổng quát hơn.
+```
+template <typename T>
+class Box {
+    T value;
+public:
+    Box(T val) : value(val) {}	//value = val
+    T getValue() {
+		return value;
+	}
+};
+
+int main() {
+    Box<int> intBox(123);       	// Lớp Box với kiểu int
+    Box<double> doubleBox(45.6); 	// Lớp Box với kiểu double
+
+    cout << intBox.getValue() << endl;    // Output: 123
+    cout << doubleBox.getValue() << endl; // Output: 45.6
+}
+```
+```
+// Class Template với nhiều tham số kiểu
+template <typename T1, typename T2>
+class Pair {
+    T1 first;
+    T2 second;
+public:
+    Pair(T1 a, T2 b) : first(a), second(b) {}
+    void print() { std::cout << first << " " << second << std::endl; }
+};
+```
+
+## Bài 15: Design Pattern
+- **Observer design pattern** là một trong những *behavioral patterns*. Nó định nghĩa một mối quan hệ phụ thuộc one-to-many giữa các đối tượng, nghĩa là khi một đối tượng thay đổi trạng thái, tất cả các đối tượng phụ thuộc vào nó sẽ được tự động thông báo và cập nhật.
+	- Có một đối tượng được gọi là **Subject**, chịu trách nhiệm quản lý và thông báo các thay đổi.
+	- Các đối tượng **Observer** sẽ đăng ký theo dõi Subject.
+	- Khi có bất kỳ sự thay đổi nào ở Subject, nó sẽ thông báo cho tất cả các Observer được đăng ký, và các Observer này sẽ tự động cập nhật để phản ánh sự thay đổi.
+Cấu trúc của Observer design pattern bao gồm:
+-	- **Subject**:
+		- Chứa danh sách các đối tượng Observer đăng ký theo dõi.
+		- Cung cấp các phương thức để thêm, xóa, và thông báo cho các Observer khi có sự thay đổi.
+	- **Observer**: Giao diện hoặc lớp trừu tượng để định nghĩa phương thức cập nhật, được gọi khi Subject thông báo sự thay đổi.
+- **Singleton design pattern** là một trong những *creational patterns* nhằm đảm bảo rằng một lớp chỉ có một đối tượng duy nhất được tạo ra, và cung cấp một phương thức để truy cập đến đối tượng đó từ bất kỳ đâu trong chương trình.
+Cấu trúc của Observer design pattern bao gồm:
+-	- Private Constructor: Đảm bảo rằng không ai có thể khởi tạo đối tượng từ bên ngoài lớp.
+	- Static Instance: Một đối tượng tĩnh duy nhất của lớp đó.
+	- Static Method: Phương thức để truy cập đến đối tượng Singleton duy nhất.
