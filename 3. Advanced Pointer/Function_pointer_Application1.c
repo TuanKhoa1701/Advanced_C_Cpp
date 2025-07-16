@@ -1,108 +1,80 @@
 #include <stdio.h>
 #include <string.h>
 
-typedef struct
-{
-    char ten[50];
-    float diemTrungBinh;
+typedef struct{
     int id;
-} SinhVien;
+    char *ten;
+    float diem
+} Sinhvien;
 
-int stringCompare(const char *str1, const char *str2)
-{
-    while (*str1 && (*str1 == *str2))
-    {
+int StringCompare(char* str1, char*str2){
+    if(*str1 && (*str1 == *str2)){
         str1++;
-        str2++;
+        str1++;
     }
-    return *(const unsigned char *)str1 - *(const unsigned char *)str2;
+return *(const unsigned char*)str1 - *(const unsigned char*)str2;
 }
 
-// Hàm so sánh theo tên
-int compareByName(const void *a, const void *b)
-{
-    SinhVien *sv1 = (SinhVien *)a;
-    SinhVien *sv2 = (SinhVien *)b;
-    return stringCompare(sv1->ten, sv2->ten);
+int CompareName(const void* a, const void* b){
+    Sinhvien *sv1 = (Sinhvien*)a;
+    Sinhvien *sv2 = (Sinhvien*)b;
+    return StringCompare(sv1->ten,sv2->ten);
 }
 
-// Hàm so sánh theo điểm trung bình
-int compareByDiemTrungBinh(const void *a, const void *b)
-{
-    SinhVien *sv1 = (SinhVien *)a;
-    SinhVien *sv2 = (SinhVien *)b;
-    if (sv1->diemTrungBinh > sv2->diemTrungBinh)
-    {
+int CompareDiem(const void *a, const void *b){
+    Sinhvien *sv1 = (Sinhvien*) a;
+    Sinhvien *sv2 = (Sinhvien*) b;
+    if( sv1->diem > sv2 -> diem ){
         return 1;
-    }
-
-    return 0;
+    }else 
+        return 0;
 }
-
-// Hàm so sánh theo ID
-int compareByID(const void *a, const void *b)
-{
-    SinhVien *sv1 = (SinhVien *)a;
-    SinhVien *sv2 = (SinhVien *)b;
-    return sv1->id - sv2->id;
+int CompareID(const void* a, const void* b){
+    Sinhvien *sv1 = (Sinhvien*)a;
+    Sinhvien *sv2 = (Sinhvien*)b;
+    return (sv1 -> id) -(sv2 -> id);
 }
-
-// Hàm sắp xếp chung
-void sort(SinhVien array[], size_t size, int (*compareFunc)(const void *, const void *))
-{
-    int i, j;
-    SinhVien temp;
-    for (i = 0; i < size - 1; i++)
-        for (j = i + 1; j < size; j++)
-            if (compareFunc(array + i, array + j) > 0)
-            {
-                temp = array[i];
-                array[i] = array[j];
-                array[j] = temp;
+void sort(Sinhvien danhsach[], size_t Size, int (*compareFunc)(const void*, const void*)){
+    int i,j;
+    Sinhvien temp;
+    for(int i=0;  i < Size-1; i++){
+        for(int j= i + 1; j < Size;j++){
+            if((*compareFunc)(danhsach + i,danhsach + j) > 0 ){
+                temp = danhsach[i];
+                danhsach[i] = danhsach[j];
+                danhsach[j] = temp;
             }
-}
-
-void display(SinhVien *array, size_t size)
-{
-    for (size_t i = 0; i < size; i++)
-    {
-        printf("ID: %d, Ten: %s, Diem Trung Binh: %.2f\n", array[i].id, array[i].ten, array[i].diemTrungBinh);
+        }
     }
-    printf("\n");
 }
-
-int main()
-{
-    SinhVien danhSachSV[] = {
-        {.ten = "Hoang",
-         .diemTrungBinh = 7.5,
-         .id = 100},
-        {.ten = "Tuan",
-         .diemTrungBinh = 4.5,
-         .id = 101},
-        {.ten = "Vy",
-         .diemTrungBinh = 6.8,
-         .id = 102},
-        {.ten = "Ngan",
-         .diemTrungBinh = 5.6,
-         .id = 10},
+void display(Sinhvien* arr, size_t Size){
+    for (int i=0; i < Size; i++){
+        printf("Ho va ten SV: %s, ID: %d, diem: %f\n", arr[i].ten, arr[i].id, arr[i].diem);
+    }
+}
+int main(){
+    Sinhvien danhsach[] = {
+        {
+            .ten = "Khoa",
+            .id  = 2111533,
+            .diem = 10.0
+        },
+        {
+            .ten = "Nam",
+            .id  = 22222,
+            .diem = 6.0
+        },
+        {
+            .ten = "Ha",
+            .id = 2000,
+            .diem = 7.0
+        }
     };
-    size_t size = sizeof(danhSachSV) / sizeof(danhSachSV[0]);
-
-    // Sắp xếp theo tên
-    sort(danhSachSV, size, compareByName);
-
-    display(danhSachSV, size);
-
-    // Sắp xếp theo điểm trung bình
-    sort(danhSachSV, size, compareByDiemTrungBinh);
-
-    display(danhSachSV, size);
-
-    // Sắp xếp theo ID
-    sort(danhSachSV, size, compareByID);
-
-    display(danhSachSV, size);
-
-    return 0;
+    size_t size =(sizeof(danhsach)/sizeof(danhsach[0]));
+    sort(danhsach, size, CompareName);
+    display(danhsach, size);
+    sort(danhsach, size, CompareID);
+    display(danhsach, size);
+    sort(danhsach, size, CompareDiem);
+    display(danhsach, size);
 }

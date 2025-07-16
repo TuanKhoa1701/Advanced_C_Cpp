@@ -2,37 +2,24 @@
 #include <setjmp.h>
 
 jmp_buf buf;
-int exception_code;
-
-#define TRY if ((exception_code = setjmp(buf)) == 0)
-#define CATCH(x) else if (exception_code == (x))
-#define THROW(x) longjmp(buf, (x))
-
-double divide(int a, int b)
-{
-    if (b == 0)
-    {
-        THROW(1); // Mã lỗi 1 cho lỗi chia cho 0
+int exception_occurred = 0;
+#define try       if ((exception_occurred = setjmp(buf))==0)
+#define catch(x)  else if (exception_occurred == (x))
+#define throw(x)  longjmp(buf, (x))
+double divide(int a, int b) {
+    if (b == 0) {
+        throw(1); // Throw an exception if division by zero
     }
-    return (double)a / b;
+    return (double)a /(double) b;
 }
-
-int main()
-{
-    int a = 10;
-    int b = 0;
-    double result = 0.0;
-
-    TRY
-    {
-        result = divide(a, b);
+int main() {
+    int a=10, b=2;
+    try {
+        double result = divide(a, b); // This will throw an exception
         printf("Result: %f\n", result);
     }
-    CATCH(1)
-    {
-        printf("Error: Divide by 0!\n");
+    catch(1) {
+        printf("Caught an exception: Division by zero!\n");
     }
-
-    // Các xử lý khác của chương trình
     return 0;
 }

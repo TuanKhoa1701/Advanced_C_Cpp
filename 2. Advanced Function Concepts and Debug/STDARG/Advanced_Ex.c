@@ -1,34 +1,25 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-typedef struct Data
-{
+typedef struct {
     int x;
-    double y;
+    double y
 } Data;
 
-void display(int count, ...)
-{
+void Display(int count , ...){
 
     va_list args;
-
     va_start(args, count);
 
-    int result = 0;
-
-    for (int i = 0; i < count; i++)
-    {
-        Data tmp = va_arg(args, Data);
-        printf("Data.x at %d is: %d\n", i, tmp.x);
-        printf("Data.y at %d is: %f\n", i, tmp.y);
+    for(int i=0; i< count; i++){
+        Data temp = va_arg(args, Data);
+        printf("Data.x from %d is %d\n",i, temp.x);
+        printf("Data.y from %d is %f\n",i, temp.y);
     }
-
     va_end(args);
+
 }
+int main(){
+    Display(2, (Data) {3,45.0},(Data) {6,79.0});
 
-int main()
-{
-
-    display(3, (Data){2, 5.0}, (Data){10, 57.0}, (Data){29, 36.0});
-    return 0;
 }

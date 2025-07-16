@@ -1,36 +1,24 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdarg.h>
 
-int sum(int a, int b)
-{
-    return a + b;
+int sum(int a, int b){
+    return a+b;
 }
-
-int main()
-{
-
-    char array[] = "Hello";
-    int value = 5;
-    double test = 15.7;
+int main(){
+    int value =  156;
+    double test = 47.0;
+    char a[]="hello";
     char letter = 'A';
 
-    void *ptr = &value;
-    printf("value is: %d\n", *(int *)(ptr));
-
+    void  *ptr = &value;
+    printf("value is: %d\n", *(int*)ptr);
     ptr = &test;
-    printf("value is: %f\n", *(double *)(ptr));
-
+    printf("test is: %f\n",*(double*)ptr);
     ptr = &letter;
-    printf("value is: %c\n", *(char *)(ptr));
+    printf("letter is: %c\n", *(char*)ptr);
 
-    ptr = sum;
-    printf("sum: %d\n", ((int (*)(int, int))ptr)(5, 6));
+    void *ptr1[]= {sum, a};
+    printf("Tong cua 2 so la: %d\n", ((int(*)(int,int))ptr1[0])(5,6));
+    printf("Gia tri cua mang: %c", *((char*)ptr1[1])+1); // đọc giá trị đầu của mảng, +1 thì + ra chữ trên ASCII
 
-    void *ptr1[] = {&value, &test, &letter, sum, array};
-
-    printf("value: %d\n", *(int *)ptr1[0]);
-
-    printf("value: %c\n", *((char *)ptr1[4] + 1));
-
-    return 0;
 }

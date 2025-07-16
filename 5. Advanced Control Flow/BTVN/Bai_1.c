@@ -2,74 +2,59 @@
 #include <setjmp.h>
 
 jmp_buf buf;
-const char *errorCode;
-#define THROW(x, y) \
-    y;              \
+
+#define THROW(x,y)  \
     longjmp(buf, x);
 
-double divide(int a, int b) // Calculate the quotient of a and b (phep chia)
-{
-    if (b == 0)
-    {
-        errorCode = THROW(1, "Error: Cannot be divide by 0");
+double divide(int a, int b) {
+    if (b == 0) {
+       THROW(1, "Error: Division by zero\n");
     }
     return (double)a / b;
 }
 
-double squareRoot(int a) // Calculate the square root of an integer (can bac 2)
-{
-    if (a < 0)
-    {
-        errorCode = THROW(2, "Error: Cannot square root a negative number");
+double squareRoot(int a) {
+    if (a < 0) {
+      THROW(2, "Error: Negative number for square root\n");
     }
-    double root = (double)a;
+    double root =  (double) a;
     double x = 0;
-    while (root != x)
-    {
+    while (root != x) {
         x = root;
-        root = 0.5 * (root + a / root);
-    }
+        root = (a / x + x) / 2;
+    }   
     return root;
 }
 
-int factorial(int a) // Calculate the factorial of an integer (giai thua)
-{
-    if (a < 0)
-    {
-        errorCode = THROW(3, "Error: Cannot factorial a negative number");
-    }
+double factorial(int a){
+    if(a<0)
+     THROW(3, "Error: Negative number for factorial\n");
     int result = 1;
-    while (a != 0)
-    {
+    for(int i = 1; i <= a; i++) {
         result *= a;
-        a--;
     }
     return result;
 }
+int main(){
+    int a =- 30;
+    int b = 15;
 
-int main()
-{
-    // Inputs
-    int a = -10;
-    int b = 20;
-
-    // Output
-    switch (setjmp(buf))
-    {
-    case 0:
-        printf("%lf\n", divide(a, b));
-        // printf("%lf\n", squareRoot(a));
-        // printf("%d\n", factorial(a));
-        break;
-    case 1:
-        printf("%s\n", errorCode);
-        break;
-    case 2:
-        printf("%s\n", errorCode);
-        break;
-    case 3:
-        printf("%s\n", errorCode);
-        break;
+    switch(setjmp(buf)) {
+        case 0: // No error
+            printf("Divide: %.2f\n", divide(a, b));
+            printf("Square root: %.2f\n", squareRoot(a));
+            printf("Factorial: %.2f\n", factorial(a));
+            break;
+        case 1: // Division by zero
+            printf( "Error: Division by zero\n");
+            break;
+        case 2: // Negative number for square root
+            printf( "Error: Negative number for square root\n");
+            break;
+        case 3: // Negative number for factorial
+            printf( "Error: Negative number for factorial\n");
+            break;
     }
-    return 0;
+
+
 }
