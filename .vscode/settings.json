@@ -16,5 +16,6 @@
     },
     "code-runner.executorMap": {
         "cpp": "cd $dir && g++ -I.. main.cpp student.cpp -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
-    }
+    },
+    "workbench.iconTheme": "material-icon-theme"
 }

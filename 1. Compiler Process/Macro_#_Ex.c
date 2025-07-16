@@ -1,13 +1,9 @@
-#include <stdio.h>
+#include "stdio.h"
 
-#define STRINGIZE(x) #x
-#define DATA 40
+#define data 10
+#define Print(x) #x
 
-int main()
-{
-
-    // Sử dụng toán tử #
-    printf("The value is: %s\n", STRINGIZE(DATA));
-
+int main() {
+    printf("The value of data is: %s\n", Print(data));
     return 0;
 }

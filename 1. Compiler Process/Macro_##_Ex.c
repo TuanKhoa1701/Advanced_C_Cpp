@@ -1,20 +1,13 @@
 #include <stdio.h>
 
-#define DECLARE_VARIABLE(prefix, number) int prefix##number
+#define Create_variable(prefix, number) int prefix##number
 
-int main()
-{
-    // Sử dụng macro để khai báo các biến động
-    DECLARE_VARIABLE(var, 1); // int var1;
-    DECLARE_VARIABLE(var, 2); // int var2;
 
-    // Gán giá trị cho các biến
-    var1 = 10;
-    var2 = 20;
+int main() {
+    Create_variable(var, 1) = 5; // This will create a variable named int1
+    Create_variable(var, 2) = 10; // This will create a variable named int2
 
-    // In ra giá trị của các biến
-    printf("var1: %d\n", var1);
-    printf("var2: %d\n", var2);
-
+    printf("Value of var1: %d\n", var1);
+    printf("Value of var2: %d\n", var2);  
     return 0;
 }

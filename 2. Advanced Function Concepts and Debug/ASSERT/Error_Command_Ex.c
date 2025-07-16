@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <assert.h>
 #define LOG(condition, cmd) assert(condition &&#cmd)
 
 int main()

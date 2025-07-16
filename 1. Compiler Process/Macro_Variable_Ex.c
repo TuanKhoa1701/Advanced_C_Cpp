@@ -1,15 +1,10 @@
 #include <stdio.h>
 
-// Macro để tính bình phương của một số
-#define SQUARE(x) ((x) * (x))
+#define Square(x) ((x) * (x))
 
-int main()
-{
 
-    // Sử dụng macro để tính bình phương của num
-    int result = SQUARE(5);
-
-    printf("Result is: %d\n", result);
-
+int main() {
+    Square(5); // This will expand to ((5) * (5))
+    printf("this is the value %d\n", Square(5)); // This will print 25
     return 0;
 }
