@@ -2,29 +2,22 @@
 #include <stdint.h>
 #include <string.h>
 
-typedef union
-{
-    struct
-    {
-        uint8_t id[2];
-        uint8_t data[4];
-        uint8_t check_sum[2];
-    } data;
+typedef union{
+    struct{
+        uint8_t value_id[2];
+        uint8_t value_data[4];
+        uint8_t value_status[2];
+    }value;
+    uint8_t frame[8]
+} Dta_frame;
 
-    uint8_t frame[8];
+int main(){
+    Dta_frame data_tx;
+    strcpy(data_tx.value.value_id, "01"); // Set value_id to 1
+    strcpy(data_tx.value.value_data, "1010"); // Set value_data to 10
+    strcpy(data_tx.value.value_status, "11"); // Set value_status to 3
 
-} Data_Frame;
+    Dta_frame data_rx;
+    strcpy(data_rx.frame, data_tx.frame); // Copy value_id
 
-int main(int argc, char const *argv[])
-{
-    Data_Frame transmitter_data;
-
-    strcpy(transmitter_data.data.id, "10");
-    strcpy(transmitter_data.data.data, "1234");
-    strcpy(transmitter_data.data.check_sum, "70");
-
-    Data_Frame receiver_data;
-    strcpy(receiver_data.frame, transmitter_data.frame);
-
-    return 0;
 }
