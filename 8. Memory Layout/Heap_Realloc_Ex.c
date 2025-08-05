@@ -17,6 +17,6 @@ int main(int argc, char const *argv[])
 
         printf("Hello %s\n", ten);
     }
-
+    free(ten); // Free allocated memory
     return 0;
 }
