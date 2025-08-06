@@ -66,7 +66,16 @@ void push_after(node **array, int value, int pos){
     temp->next = p->next; // set next member of new node to point to the next node of current node
     p->next = temp;
 }
-
+void size(node *array)
+{
+    int i = 0;
+    while (array != NULL)
+    {
+        array = array->next;
+        i++;
+    }
+    printf("Size of linked list: %d\n", i);
+}
 void pop_back(node **array)
 {
     node *p, *temp;
@@ -149,7 +158,7 @@ int main()// 0  1   2   3
 
     push_front(&arr, 1);
     pop_front(&arr);
-    
+    size(arr);
     printf("Value test: %d\n", get(arr, 2));
     printf("Value test: %d\n", get(arr, 0));
     printf("Value test: %d\n", get(arr, 3));
